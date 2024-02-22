@@ -10,3 +10,7 @@ node_modules
 !.env.example
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+.vscode/settings.json
+.vscode/extensions.json
+.gitignore
+pnpm-lock.yaml
