@@ -163,13 +163,13 @@ function load() { let s = localStorage.key(0);
             on:pointerleave = { ()=> focus = -1 }
         >
         {#each todos.filter(t => !t.done) as todo (todo.id)}
-            <label  animate:flip  = {{duration: 600}}
-                    in:receive    = {{key: todo.id }}
-                    out:send      = {{key: todo.id }}
-                    on:contextmenu = {e=>alert(e.target)}
+            <label  animate:flip    = {{duration: 600}}
+                    in:receive      = {{key: todo.id }}
+                    out:send        = {{key: todo.id }}
+                    on:contextmenu  = {e=>alert(e.target)}
                     on:pointerenter = {e=>e.currentTarget.classList.add('hovr')}
                     on:pointerleave = {e=>e.currentTarget.classList.remove('hovr')}
-                    class:hovr    = {L && todo.id===focus+1}
+                    class:hovr      = {L && todo.id===focus+1}
                 >
                     <input    type = checkbox   on:change = { ()=>{ mark(todo, true) } }
                             > {todo.id}. {todo.text} 
@@ -189,13 +189,13 @@ function load() { let s = localStorage.key(0);
             on:pointerleave = {()=>focus=-1}
         >
         {#each todos.filter(t => t.done) as done (done.id)}
-            <label  class         = "done"
-                    animate:flip  = {{duration: 600}}
-                    in:receive    = {{key: done.id}}
-                    out:send      = {{key: done.id}}
+            <label  class           = "done"
+                    animate:flip    = {{duration: 600}}
+                    in:receive      = {{key: done.id}}
+                    out:send        = {{key: done.id}}
                     on:pointerenter = { e=> e.currentTarget.classList.add('hovr')    }
                     on:pointerleave = { e=> e.currentTarget.classList.remove('hovr') }
-                    class:hovr    = { !L && done.id===focus+1 }
+                    class:hovr      = { !L && done.id===focus+1 }
                 >
                     <input    type = checkbox   checked   on:change = { ()=> mark(done, false)}
                             > ✔ &nbsp {done.id}. {done.text}
@@ -213,8 +213,6 @@ function load() { let s = localStorage.key(0);
 
 
 
-
-
 <style>
 
 :global(body) { 
@@ -229,8 +227,7 @@ function load() { let s = localStorage.key(0);
         height  : 86vh;		    user-select     : none;
         margin  : 2vh 1vw;      box-shadow	    : 0 0 4vmin #000; 
         overflow: hidden;       justify-content : center;
-        gap     : 2vh 5vw;	    grid-template-rows   : 8vh 16vh auto;
-                                grid-template-columns: repeat( 2, minmax(40vw, 1fr) );
+        gap     : 2vh 5vw;	    grid: 9vh 16vh auto / repeat( 2, minmax(40vw, 1fr) );
 }
 
 
