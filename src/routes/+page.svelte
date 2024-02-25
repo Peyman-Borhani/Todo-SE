@@ -159,16 +159,16 @@ function load() { let s = localStorage.key(0);
 <header  class = 'left'>     <h1> Todo </h1>    </header>
 
     <div	class = 'left' 
-            on:mouseenter = { ()=> focus = -1 }
-            on:mouseleave = { ()=> focus = -1 }
+            on:pointerenter = { ()=> focus = -1 }
+            on:pointerleave = { ()=> focus = -1 }
         >
         {#each todos.filter(t => !t.done) as todo (todo.id)}
             <label  animate:flip  = {{duration: 600}}
                     in:receive    = {{key: todo.id }}
                     out:send      = {{key: todo.id }}
                     on:contextmenu = {e=>alert(e.target)}
-                    on:mouseenter = {e=>e.currentTarget.classList.add('hovr')}
-                    on:mouseleave = {e=>e.currentTarget.classList.remove('hovr')}
+                    on:pointerenter = {e=>e.currentTarget.classList.add('hovr')}
+                    on:pointerleave = {e=>e.currentTarget.classList.remove('hovr')}
                     class:hovr    = {L && todo.id===focus+1}
                 >
                     <input    type = checkbox   on:change = { ()=>{ mark(todo, true) } }
@@ -185,16 +185,16 @@ function load() { let s = localStorage.key(0);
 <header  class = 'right'>     <h1> Done </h1>    </header>
 
     <div    class = 'right'
-            on:mouseenter = {()=>focus=-1}
-            on:mouseleave = {()=>focus=-1}
+            on:pointerenter = {()=>focus=-1}
+            on:pointerleave = {()=>focus=-1}
         >
         {#each todos.filter(t => t.done) as done (done.id)}
             <label  class         = "done"
                     animate:flip  = {{duration: 600}}
                     in:receive    = {{key: done.id}}
                     out:send      = {{key: done.id}}
-                    on:mouseenter = { e=> e.currentTarget.classList.add('hovr')    }
-                    on:mouseleave = { e=> e.currentTarget.classList.remove('hovr') }
+                    on:pointerenter = { e=> e.currentTarget.classList.add('hovr')    }
+                    on:pointerleave = { e=> e.currentTarget.classList.remove('hovr') }
                     class:hovr    = { !L && done.id===focus+1 }
                 >
                     <input    type = checkbox   checked   on:change = { ()=> mark(done, false)}
@@ -218,29 +218,29 @@ function load() { let s = localStorage.key(0);
 <style>
 
 :global(body) { 
-        overflow : hidden;         	background-color: #334;
-        font-size: var(--size);    	user-select : none; 
-                                    --size      : calc((3.2vh + 2.2vw)/2)
+        overflow : hidden;              background-color: #334;
+        font-size: var(--size);         user-select     : none; 
+        --size   : calc((3.2vh + 2.2vw)/2);
 }
 
 .board {	
-        display : grid;				background-color: #345;
-        padding : 4vmin;			border-radius	: 4vmin;  
-        height  : 86vh;				user-select     : none;
-        margin  : 2vh 1vw;	        box-shadow	    : 0 0 4vmin #000; 
-        overflow: hidden;			justify-content : center;
-        gap		: 2vh 5vw;			grid-template-rows   : 8vh 16vh auto;
-                                    grid-template-columns: repeat( 2, minmax(40vw, 1fr) );
+        display : grid;		    background-color: #345;
+        padding : 4vmin;	    border-radius	: 4vmin;  
+        height  : 86vh;		    user-select     : none;
+        margin  : 2vh 1vw;      box-shadow	    : 0 0 4vmin #000; 
+        overflow: hidden;       justify-content : center;
+        gap     : 2vh 5vw;	    grid-template-rows   : 8vh 16vh auto;
+                                grid-template-columns: repeat( 2, minmax(40vw, 1fr) );
 }
 
 
 header{ grid-row: 2 }	.left { grid-column: 1}        .right { grid-column: 2 }
 
-h1  	{							background-color: #002; 
-        grid-row   : 2;             letter-spacing: .2ch;
-        color      : #eee;        border-radius : 6vmin;
-        font-weight: 400;			text-align : center;	 	       
-                                    box-shadow		: 0 0 3vmin #888;	        								
+h1    {						        background-color: #002; 
+        grid-row   : 2;             letter-spacing  : .2ch;
+        color      : #eee;        border-radius   : 6vmin;
+        font-weight: 400;	        text-align  : center;	 	       
+                                    box-shadow  : 0 0 3vmin #888;	        								
 }
 
 
