@@ -215,17 +215,13 @@ function load() { let s = localStorage.key(0);
 
 <style>
 
-:global(body) { 
-        overflow : hidden;              background-color: #334;
-        font-size: var(--size);         user-select     : none; 
-        --size   : calc((3.2vh + 2.2vw)/2);
-}
+
 
 .board {	
         display : grid;		    background-color: #345;
-        padding : 4vmin;	    border-radius	: 4vmin;  
+        padding : 4vmin;	    border-radius	: 2pt;  
         height  : 86vh;		    user-select     : none;
-        margin  : 2vh 1vw;      box-shadow	    : 0 0 4vmin #000; 
+        margin  : 2vh 1vw;      box-shadow	    : 0 0 3vmin #000, inset 0 0 2vmin #000; 
         overflow: hidden;       justify-content : center;
         gap     : 2vh 5vw;	    grid: 9vh 16vh auto / repeat( 2, minmax(40vw, 1fr) );
 }
