@@ -21,139 +21,38 @@ const [send, receive] = crossfade(
                 };
         }
     });
-
-let idx   = 1;
-let focus = 0;
-let L = true; // L means Keyboard focus on left side (todo)
-let footer, info, zoom, view; // App keyboard controls, as props sent to info component
-let prvKey; // The key pressed previously
-let task_name;
-
-let todos = [	{ id: idx++,  done: true ,  text: 'Think about new ideas.' },
-            { id: idx++,  done: false,  text: 'Learn new things.'      },
-            { id: idx++,  done: true ,  text: 'Check my messages.'     },
-            { id: idx++,  done: false,  text: 'Handle few job orders.' },
-            { id: idx++,  done: false,  text: 'Write some code. 🗑'     },
-            { id: idx++,  done: false,  text: 'Solve few problems.🎯'  },
-            { id: idx++,  done: false,  text: 'Write a new blog post.'  },
-          ];
+    let   input = $state('');
+    $effect(_=>console.log(input));
+   // let x= $derived(input)
+   //setTimeout( _=> {input='hello'}, 3000);
+    let     qN   = 1,
+            focus = 0,
+            L = true,        // L means Keyboard focus on left side (todo)
+            footer, info, zoom, view, // App keyboard controls, as props sent to info component
+            prvKey,         // The key pressed previously
+            task_name;
 
 
-function  insert(inp) {
-                    if(inp.value==='') { inp.blur();   return }
-                    if ( !inp.value.endsWith('.') )  inp.value+= '.';
-
-                      let todo = {  id  : idx++, // 1
-                                    done: false,
-                                    text: inp.value //data.detail.input
-                               };   // console.log(todo.text);
-
-                    inp.value = ''; // updateID(2)
-                    inp.blur();
-                    todos = [todo, ...todos];
-}   
-
-function  updateID(id=1) 	{  todos.forEach(t=> (!t.done)? t.id = id++ : {})
-                             todos.forEach(t=> (t.done) ? t.id = id++ : {})
-                           } //update ID's to be in order
-
-function  remove(todo)  	{  todos = todos.filter(t => t !== todo)  }
-
-function  mark(todo, state) { todo.done = state;
-                            remove(todo);
-                            todos = todos.concat(todo);
-}
-
-
-function keyInput(k){ // keyboard input handler
-
-let c=0;    // counter to check if any element left over
-if(k.target.id==='typin' || k.target.id==='task-name' || todos.length===0)  return; 
-//alert(k) //if user is typing or empty list return.
-k = k.which;// console.log(event.srcElement.style)
-switch(k) { 
-        case 32:	footer = !footer;	// space key Footer visible.
-                    if(info) {info = false;  footer = false}
-                    break;
-
-        case 73:	if(footer) {info = true; footer = false}
-                    else info = !info; // i key: show or remove app info 
-                    break;
-        
-        case 37:  
-        case 39:	// Left or Right keys pressed
-                    focus = 0; 	  // focus is the selected element virtual index
-                    L = (k===37) ?   true   : false;
-                                  //reaching the first todo(left side) or done(right side)
-                    if  (k===37)  while(todos[focus].done)  focus++;
-                    else          while(!todos[focus].done) focus++;
-                    break;
-
-        case 38:   //up
-                    if(L) while( focus>0 && todos[focus-1].done  ) {focus--; c++} //todo
-                    else  while( focus>0 && !todos[focus-1].done ) {focus--; c++} //done
-                    if(c===todos.length) break; //if all is from opposite site
-                    if(focus>0) focus--; //go up -1
-                    else focus = todos.length-1;
-                    break;
-
-        case 40: 	//down
-                    if(focus+1===todos.length) focus = -1;
-                    if(L) while(todos[focus+1].done)  {focus++; c++} //todo
-                    else  while(!todos[focus+1].done) {focus++; c++} //done
-                    if(c!==todos.length) focus++; //if all is not from opposite side
-                                                 // go down +1
-                    break;
-        
-        case 46:
-        case 110: 	// del  or   .
-                    remove(todos[focus]);
-                    if (focus===0) {}
-                    else if (focus > 0) focus--;
-                    else if(focus+1 <= todos.length) focus++;
-                    updateID(); focus = 0;
-                    break;
-          
-        case 107:   zoom=!zoom;  //document.documentElement.style.setProperty('--size', 'calc((3vh + 4vw)/2)'); 
-                    save(); load();  
-                    break; // pressed +
-                    
-        case 86:	view = !view;	break; // view button
-
-        case 13:	if(focus >=0)  //if enter key pressed and keyboard focused	
-                      todos[focus].done = (todos[focus].done) ?  false  : true;
-                    break;
-        
-        case 83:    if(prvKey===83) save(); break;  //to save data press double s
-        
-        case 76:    if(prvKey===76) load(); break;  //to save data press double l
-                    
-        default: 	focus=-1;   event.target.firstChild.firstChild.focus();
-                    break;
- }
-prvKey = k; // saves the key so next time the previous will be known.
-}
 
 function save() {	let tid  = 0;  let l = localStorage;
                     task_name = document.getElementsByTagName('VAR').item(0).innerText; 
                     console.log(task_name);
-                    todos.forEach( (t=>{ l.setItem((task_name+tid), t.text); tid++ } ) );  // Storing todos data
+                    Todos.forEach( (t=>{ l.setItem((task_name+tid), t.text); tid++ } ) );  // Storing Todos data
 }
 
 
 function load() { let s = localStorage.key(0);   
                     //  s = localStorage.getItem(s); 
-                        //console.log(s) // loading todos data
+                        //console.log(s) // loading Todos data
 }
 
 </script>
 
 
-<svelte:window	  on:keydown = {keyInput} />
 
 <div	class = 'board'	  on:contextmenu = {false}>
 
-<Input	 on:keydown = {e=> e.which===13 && insert(e.target)}  />
+<Input />	 <!--on:keydown = {e=> e.which===13 && insert(e.target.value)}  /-->
 
 
 <header  class = 'left'>     <h1> Todo </h1>    </header>
@@ -162,17 +61,17 @@ function load() { let s = localStorage.key(0);
             on:pointerenter = { ()=> focus = -1 }
             on:pointerleave = { ()=> focus = -1 }
         >
-        {#each todos.filter(t => !t.done) as todo (todo.id)}
+        {#each Todos.filter(t => !t.done) as todo (todo.qID)}
             <label  animate:flip    = {{duration: 600}}
-                    in:receive      = {{key: todo.id }}
-                    out:send        = {{key: todo.id }}
+                    in:receive      = {{key: todo.qID }}
+                    out:send        = {{key: todo.qID }}
                     on:contextmenu  = {e=>alert(e.target)}
                     on:pointerenter = {e=>e.currentTarget.classList.add('hovr')}
                     on:pointerleave = {e=>e.currentTarget.classList.remove('hovr')}
-                    class:hovr      = {L && todo.id===focus+1}
+                    class:hovr      = {L && todo.qID===focus+1}
                 >
                     <input    type = checkbox   on:change = { ()=>{ mark(todo, true) } }
-                            > {todo.id}. {todo.text} 
+                            > {todo.qID}. {todo.text} 
                 
                     <button   class = 'trash'   on:click  = { ()=> { remove(todo) } }
                             > remove 
@@ -188,17 +87,17 @@ function load() { let s = localStorage.key(0);
             on:pointerenter = {()=>focus=-1}
             on:pointerleave = {()=>focus=-1}
         >
-        {#each todos.filter(t => t.done) as done (done.id)}
+        {#each Todos.filter(t => t.done) as done (done.qID)}
             <label  class           = "done"
                     animate:flip    = {{duration: 600}}
-                    in:receive      = {{key: done.id}}
-                    out:send        = {{key: done.id}}
+                    in:receive      = {{key: done.qID}}
+                    out:send        = {{key: done.qID}}
                     on:pointerenter = { e=> e.currentTarget.classList.add('hovr')    }
                     on:pointerleave = { e=> e.currentTarget.classList.remove('hovr') }
-                    class:hovr      = { !L && done.id===focus+1 }
+                    class:hovr      = { !L && done.qID===focus+1 }
                 >
                     <input    type = checkbox   checked   on:change = { ()=> mark(done, false)}
-                            > ✔ &nbsp {done.id}. {done.text}
+                            > ✔ &nbsp {done.qID}. {done.text}
 
                     <button   class= 'trash'   on:click = {() => remove(done)} 
                             > remove
@@ -215,7 +114,11 @@ function load() { let s = localStorage.key(0);
 
 <style>
 
-
+:global(body) { 
+    overflow : hidden;              background-color: #334;
+    font-size: var(--size);         user-select     : none; 
+    --size   : calc((3vmin + 2vw)/2);
+}
 
 .board {	
         display : grid;		    background-color: #345;
