@@ -1,24 +1,24 @@
 
 <script>    
-            import {scale, fly, fade}   from    'svelte/transition'
-            
-            export  let  footer = false,
-                         info   = false,
-                         zoom   = false,
-                         view   = false;
+    import {scale, fly, fade}   from    'svelte/transition'
 
-        let inf;
-        let wait = false;
-        let vu   = '☰';  // ╋ ✚ ❚ ≣ ⚌ ░ 💾 📤 📥 🗺 🛠 🛒
-        let task_name = 'My Task'; //task_name= task_name.substring(6,-1);
+    export  let     footer = false,
+                    info   = false,
+                    zoom   = false,
+                    view   = false;
 
-        let maxText;
-        let d = new Date();
-        let time = setInterval(()=>d.toLocaleTimeString(), 1000);
-        let date = d.toLocaleDateString();
+    let  inf;
+    let  wait = false;
+    let  vu   = '☰';  // ╋ ✚ ❚ ≣ ⚌ ░ 💾 📤 📥 🗺 🛠 🛒
+    let  task_name = 'My Task'; //task_name= task_name.substring(6,-1);
+
+    let  maxText;
+    let  d = new Date();
+    let  time = setInterval(()=>d.toLocaleTimeString(), 1000);
+    let  date = d.toLocaleDateString();
     // to disappear the info menu in 3 seconds if is on and
     // there be no interaction. (info=true means info is visible)
-    function infade(t=3000) {  if(footer)  inf = setTimeout( ()=>{footer=false}, t) }
+    function infade(t=3000) { console.log('y...es'); if(footer)  inf = setTimeout( ()=>{footer=false}, t) }
 
     function stay  () {  clearTimeout(inf)  }
     
@@ -34,10 +34,10 @@
 
     function infu () {   if(footer)  footer = false; info = !info; wait = true; } //exit footer when info is selected.
 
-    function fuut () {   if (footer && event.target.tagName!=='FOOTER') return; //clicking other buttons on the footer.
+    function fuut (e){   if (footer && e.target.tagName!=='FOOTER') return; //clicking other buttons on the footer.
                          if(!wait) footer = !footer; //to prevent accidental mouseover when element in animation.
                          if (footer) stay();
-                         if (info) info = false;
+                         if (info)   info = false;
     }
 
     //to modify the task name yet limit the text size and behaviour
@@ -50,39 +50,40 @@
     } 
 </script>
 
-<var  id={task_name} style = 'display: none'   >{task_name}</var>
 
-{#if info}          <span   id = 'help'
-                            transition:fade
-                            on:mousedown  = {infu}
-                            on:mouseleave = {infade}                            
+<var  id={task_name} style = 'display: none'> {task_name} </var>
 
-                          > Best Todo app ever !<br> <br>
-                            Interact by touch/hold / key / mouse<br> 
-                            Press Tab or select input to type<br> 
-                            keys: arrows, enter, delete, tab, i<br> <br>
-                            &copy By Peyman Borhani.
+{#if info}      
+            <span   id = 'help'
+                    transition:fade
+                    on:pointerdown  = {infu}
+                    on:pointerleave = {infade}                            
 
-   
-                    </span>
+                    > A Perfect Todo app !<br> <br>
+                    Interact by touch/hold / key / mouse<br> 
+                    Press Tab or select input to type<br> 
+                    keys: arrows, enter, delete, tab, i<br> <br>
+                    &copy Peyman Borhani.
+
+
+            </span>
 
 
 {:else if footer}
+        
+    <date   class ='btn'   transition:fly={{ y: -40 }}>     {date}  
+    </date>
 
-    <date  id= 'date'  class= 'btn'  transition:fly= {{ y: -40 }} >  {date}  </date>
-
-    <footer on:mouseleave  = {infade}
-            transition:fly = {{ y: 100, duration: 1000 }} 
-            on:mousedown   = {fuut}
-            on:mouseover   = {stay}
-            on:x = {infade(7000)}
-            >
-
-            <span   id = 'info'      class = 'btn i'     class:pressed = {info}
-                    on:click = {infu}  
-                    > Info 
+    <footer  on:mouseleave  = {infade}
+             transition:fly = {{ y: 100, duration: 1000 }} 
+             on:mousedown   = {fuut}
+             on:mouseover   = {stay}
+             on:x = {infade(7000)}
+    >
+            <span   id    = '#_Info'    on:click = {infu}
+                    class = 'btn i'     class:pressed = {info}        
+            >  About 
             </span>
-
 
             <span   id = 'zoom'      class = 'btn'      transition:fade
                     class:pressed = {zoom}
@@ -103,16 +104,17 @@
             </span>
     </footer>
 
-{:else}         <span   class = 'btn i'
-                        transition:fly = "{{ y: -400, duration: 1000 }}"
-                        on:mouseover   = {fuut}
-                        on:mousedown   = {fuut}
-                        on:introend    = { ()=> wait = false }
-                        on:outroend    = { ()=> wait = false }
-                        on:introstart  = { ()=> wait = true  }
-                        on:outrostart  = { ()=> wait = true  }
-                    >  i
-                </span>
+{:else}     
+        <span   class = 'btn i'
+                transition:fly = "{{ y: -400, duration: 1000 }}"
+                on:mouseover   = {fuut}
+                on:mousedown   = {fuut}
+                on:introend    = { ()=> wait = false }
+                on:outroend    = { ()=> wait = false }
+                on:introstart  = { ()=> wait = true  }
+                on:outrostart  = { ()=> wait = true  }
+            >   i
+        </span>
 {/if}
 
 
@@ -157,7 +159,7 @@
                                         width  : fit-content;                                            
 }
 
-  #info   {font-size: 3.4ch;   font-weight: 500;   padding: 1.6vmax 1.2vmax}
+  #info    {font-size: 3.4ch;   font-weight: 500;   padding: 1.6vmax 1.2vmax}
 
 
   #view   {   
@@ -187,9 +189,7 @@
             color       : #cdf;       border   : none;
             margin      : 0;            border-radius: 3ch;
                                         background-color: rgba(8, 0, 48, .7);
-                
 }
-
 
   #help  {   
             position: fixed;            width : fit-content !important;
@@ -197,18 +197,18 @@
             right   : 1vw;              background-color: rgba(4, 16, 28, .94);
 }
 
-  #date  {   
-            position: fixed;            width  : 11ch;
-            left: 25vw;                 height : 2ch;
+  date  {   
+            position: fixed;            width  : 12ch;
+            left    : 25vw;             height : 2ch;
             top     : 1vh;              padding: .4ch 0;
             color   : #95a;           font-size: 3ch;
                                         background-color: rgba(4, 16, 28, .9);
 }
 
-@media  screen and (orientation: landscape) { 
+@media  screen  and  (orientation: landscape) { 
 
             #view { display: none}  
             #task-name  {left:unset} 
-            #date { left: 38vw}
+            date { left: 8vw}
 }
 </style>
