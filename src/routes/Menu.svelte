@@ -64,8 +64,6 @@
                     Press Tab or select input to type<br> 
                     keys: arrows, enter, delete, tab, i<br> <br>
                     &copy Peyman Borhani.
-
-
             </span>
 
 

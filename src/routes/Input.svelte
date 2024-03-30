@@ -12,14 +12,12 @@ $: k = ( t === 0 ) ?  true  : false;
 
 
 function  insert(inp) {
-                inp===''? { inp.blur() &&  return }
-              : inp
-            if ( !inp.value.endsWith('.') )  inp.value+= '.';
+                if (inp==='' || typeof inp!=='string') {inp.blur();      return}
 
-                let todo = {  qID  : qN++, // 1
-                            done: false,
-                            text: inp.value //data.detail.input
-                        };   // console.log(todo.text);
+                let todo = {    qID  : qN++, // 1
+                                done : false,
+                                text : inp.value //data.detail.input
+                };  // console.log(todo.text);
 
             inp.value = ''; // updateID(2)
             inp.blur();
@@ -132,8 +130,6 @@ const  addItem= ev=>  { let k =  ev.key ? ev.key   :'',
         <button   on:pointerdown={addItem}>    <time class:timer = {k}   >   {time}    </time>
         </button>
 </div>
-
-
 
 
 <style>

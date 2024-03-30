@@ -4,6 +4,7 @@
     import  { flip     }		  from  'svelte/animate';
     import	  Input				  from  './Input.svelte';
     import	  Menu				  from  './Menu.svelte' ;	
+    import    {D, Data, init}    from  './store.js';
 
 //		import  { item     }		  from  './Input.svelte';
 const [send, receive] = crossfade( 
@@ -45,7 +46,7 @@ function load() { let s = localStorage.key(0);
                     //  s = localStorage.getItem(s); 
                         //console.log(s) // loading Todos data
 }
-
+setTimeout(()=>init(), 2000);
 </script>
 
 
