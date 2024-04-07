@@ -1,38 +1,39 @@
 <script>
     import  { fade, crossfade }   from  'svelte/transition';
     import  { quintOut }		  from  'svelte/easing';
-    import  { flip     }		  from  'svelte/animate';
-    import	  Input				  from  './Input.svelte';
-    import	  Menu				  from  './Menu.svelte' ;	
-    import    {D, Data, init}    from  './store.js';
+    import  { flip     }	    from  'svelte/animate';
+    import	  Input		        from  './Input.svelte';
+    import	  Menu				from  './Menu.svelte' ;	
+    //import  {D, Data, init}     from  './store.js';
 
-//		import  { item     }		  from  './Input.svelte';
-const [send, receive] = crossfade( 
-      {
-        duration: d => Math.sqrt(d * 400), 
-        fallback(node, params) { 
-                const style = getComputedStyle(node);
-                const transform = style.transform === 'none' ? '' : style.transform;
+const [send, receive] = crossfade(
+{   duration: d => Math.sqrt(d * 400), 
+    fallback(node, params) { 
+        const style = getComputedStyle(node);
+        const transform = style.transform === 'none' ? '' : style.transform;
 
-                return {duration: 900,
-                        easing  : quintOut,
-                        css     : t => ` transform: ${transform} 
-                                         scale(${t});
-                                         opacity  : ${t} `
-                };
-        }
-    });
+        return {duration: 900,
+                easing  : quintOut,
+                css     : t => `transform: ${transform} 
+                                scale(${t});
+                                opacity  : ${t} `
+        };
+    }
+});
+
+console.log('sooooo ', typeof 5);
+
     let   input = $state('');
     $effect(_=>console.log(input));
    // let x= $derived(input)
    //setTimeout( _=> {input='hello'}, 3000);
+   
     let     qN   = 1,
             focus = 0,
             L = true,        // L means Keyboard focus on left side (todo)
             footer, info, zoom, view, // App keyboard controls, as props sent to info component
             prvKey,         // The key pressed previously
             task_name;
-
 
 
 function save() {	let tid  = 0;  let l = localStorage;
@@ -44,7 +45,7 @@ function save() {	let tid  = 0;  let l = localStorage;
 
 function load() { let s = localStorage.key(0);   
                     //  s = localStorage.getItem(s); 
-                        //console.log(s) // loading Todos data
+                    //console.log(s) // loading Todos data
 }
 setTimeout(()=>init(), 2000);
 </script>
@@ -108,7 +109,6 @@ setTimeout(()=>init(), 2000);
     </div>
 </div>
 
-
 <Menu  {footer} {info} {zoom} {view} />
 
 
@@ -116,9 +116,12 @@ setTimeout(()=>init(), 2000);
 <style>
 
 :global(body) { 
-    overflow : hidden;              background-color: #334;
-    font-size: var(--size);         user-select     : none; 
-    --size   : calc((3vmin + 2vw)/2);
+    overflow : hidden;          font-size   : var(--size);
+    width    : 100vw;           user-select : none; 
+    height   : 100vh;           --size      : calc((3vmin + 2vw)/2);
+                                background-color: #334;
+    font-family:    Merriweather, helvetica neue, Helvetica, Arial, sans-serif !important
+     
 }
 
 .board {	
@@ -127,7 +130,7 @@ setTimeout(()=>init(), 2000);
         height  : 86vh;		    user-select     : none;
         margin  : 2vh 1vw;      box-shadow	    : 0 0 3vmin #000, inset 0 0 2vmin #000; 
         overflow: hidden;       justify-content : center;
-        gap     : 2vh 5vw;	    grid: 9vh 16vh auto / repeat( 2, minmax(40vw, 1fr) );
+        gap     : 2vh 5vw;	    grid: 9vh 16vh auto / repeat( 2, minmax(40%, 1fr) );
 }
 
 
