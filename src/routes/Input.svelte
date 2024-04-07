@@ -1,36 +1,18 @@
 <script>
     
-    import {fade} from    'svelte/transition';
+    import   {fade}     from   'svelte/transition';
         
-    let d    = new Date();
-    let time = d.toLocaleTimeString();
-    let k, t = 0;
+    const time = ()=> new Date().toISOString().slice(11,24);
+    let  k  =  
+         tm = 0;
 
-setInterval((d=new Date())=> { time=d.toLocaleTimeString(); t=time.slice(3,4)}, 1000);
-$: k = ( t === 0 ) ?  true  : false;
+setInterval( ()=>  tm=time(),  1000);
+$: k = (tm===0) ?  true  : false;
 //$: k = ((t+1)%10 === 0) ? true  : false;
 
 
-function  insert(inp) {
-                if (inp==='' || typeof inp!=='string') {inp.blur();      return}
 
-                let todo = {    qID  : qN++, // 1
-                                done : false,
-                                text : inp.value //data.detail.input
-                };  // console.log(todo.text);
-
-            inp.value = ''; // updateID(2)
-            inp.blur();
-            todos = [todo, ...todos];
-}   
-
-function  updateID(qID=1) 	{todos.forEach(t=> (!t.done)? t.qID = qID++ : {})
-                             todos.forEach(t=> (t.done) ? t.qID = qID++ : {})
-                           } //update qID's to be in order
-
-function  remove(todo)  	{  todos = todos.filter(t => t !== todo)  }
-
-function  mark(todo, state) {   todo.done = state;
+function  mark(todo, state) {   todo.state = state;
                                 remove(todo);
                                 todos = todos.concat(todo);
 }
@@ -97,12 +79,12 @@ switch(k) {
     
     case 83:    if(prvKey===83) save(); break;  //to save data press double s
     
-    case 76:    if(prvKey===76) load(); break;  //to save data press double l
+    case 76:    if(prvKey===76) load(); break;  //to load data press double l
                 
     default: 	focus=-1;   evk.target.firstChild.firstChild.focus();
                 break;
  }
-prvKey = k; // saves the key so next time the previous will be known.
+prvKey = k; // saves pressed key to be known on next input
 }
 
 const  addItem= ev=>  { let k =  ev.key ? ev.key   :'',
@@ -125,7 +107,7 @@ const  addItem= ev=>  { let k =  ev.key ? ev.key   :'',
                   placeholder = '❯❯  Enter a new item...'
                   on:focus    = {e=> e.target.setAttribute('placeholder', '') }
                   on:blur     = {e=> e.target.setAttribute('placeholder', '❯❯  Enter a new item...') }
-                  on:keydown={addItem}
+                  on:keydown  = {addItem}
               >
         <button   on:pointerdown={addItem}>    <time class:timer = {k}   >   {time}    </time>
         </button>
