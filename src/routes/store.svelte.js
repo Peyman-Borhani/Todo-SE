@@ -49,23 +49,29 @@ list();
 
 //______________________Add new item________________
 function  insert(inp='', typ=undefined, timer= undefined) {
-    let  ctm= get();  //current time
-    // makes a custom date or becomes no timer
-    timer = (timer===undefined)? false  : get(timer);
+    //current date/time
+    let  ctm= get();  
+    //__Check/set the type of input
+    const typ = ((typ===undefined || typ==='todo')) 
+                ?'todo'  :(typ==='done')?'done'  :false;
+    // check if date/time input is valid [min, hr, day, month, year]
+    // *implement: timer format correct? set a countdown :else false
+    timer = (timer===undefined)? '_'  : get(timer);
 
-    typ= (typ===undefined || typ==='todo' || timer) 
-         ? 'todo' : typ==='done' ?  'done'  :false;
-    if(!typ || inp.length<1 || inp===''|| typeof inp!=='string')
-        return "bad input"; // test numbers
-
+    if(!typ || !timer || inp.length<1 || inp==='')//test numbers:|| typeof inp!=='string')
+        return "bad input"; 
+    // item status done or not? 
     let  done = (typ==='done')? true  :false;
-    (typ==='todo')?  D.o =[inp, ...D.o]   : D.one =[inp, ...D.one];
-
-    Data.set( (qN++), new Map([ ['done', done],
+    // Update D.o/D.one array  //remove if not needed
+    (typ==='todo')  ? D.o   =[inp, ...D.o]   
+                    : D.one =[inp, ...D.one];
+    // setting a new Map item
+    Data.set( (qN++), new Map([ ['done',  done],
+                                ['item',  inp],
+                                ['id',    ctm.id],
+                                ['date',  ctm.date],
+                                ['time',  ctm.time],
                                 ['timer', timer],
-                                ['id', ctm.id],
-                                ['date', ctm.date],
-                                ['time', ctm.time],
                                 ['tasks', false] ])
     );
 }   
