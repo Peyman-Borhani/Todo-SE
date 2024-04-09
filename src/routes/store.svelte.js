@@ -1,4 +1,5 @@
-//export  {D, Data,   init}
+export  {init,  insert}
+
 let qN= 0;  // que number
 
 const   Data = $state(new Map());
@@ -75,21 +76,12 @@ function  insert(inp='', typ=undefined, timer= undefined) {
                                 ['tasks', false] ])
     );
 }   
-/* 
+/*  Todo: sort/groupBy
 function  updateID (qID=1) 	{
         D.o.forEach(t=> (!t.done)? t.qID = qID++ : {})
         D.o.forEach(t=> (t.done) ? t.qID = qID++ : {})
 } // after any changes, this must update qID's to be in order
 */
-const   remove_Todo = td=>  D.o =D.o.filter(t=> t!==td),
-        remove_Done = dn=>  D.one =D.one.filter(d=> d!==dn);
 
-function  mark(x) {
-        
-            let tid = D.o.indexOf(x),
-                did = D.one.indexOf(x);
-            if(tid && did) return "error: false ID";
-
-            if(tid)  {remove_Todo(x);   D.one.push(x)}
-            else if(did) {remove_Done(x);  D.o.push(x)}
-}
+const  remove = qID=> Data.delete(qID);
+const  mark = qID=> Data.qID?.done.set(true);
