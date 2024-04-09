@@ -189,7 +189,6 @@ label:hover .trash   {opacity: 0.6}
         background-size: 1.7em 1.6em;
 }
 
-/* and (view) */
 @media screen and (orientation: portrait)
 {   
     :global(body)	{	--size: calc((2.8vh + 4vw)/2);  }
@@ -200,12 +199,11 @@ label:hover .trash   {opacity: 0.6}
             gap   : 1vh;
     }
     header.right	{	grid-row   : 4   }		
-        .right	{ 	grid-row   : 5   }
     header, .right	{ 	grid-column: 1   }
 
     label	{	text-indent: -3.2ch   }		
 }
-    /* in case want to use original checkbox... 
+    /* To use default checkbox:
     input[type = "checkbox"]  { display : none; top : .6em;  position: absolute; left: .5em 
     .done.hovr> input[type = "checkbox"]  {	opacity: 1;  }   
     .done > input[type = "checkbox"]  {	display: block		        position: absolute;
