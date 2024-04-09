@@ -3,10 +3,10 @@
     import   {fade}     from   'svelte/transition';
         
     const time = ()=> new Date().toISOString().slice(11,24);
-    let  k  =  
-         tm = 0;
+    let  k  = '',
+         tm = 0 ;
 
-setInterval( ()=>  tm=time(),  1000);
+setInterval( ()=> tm=time(),  1000);
 $: k = (tm===0) ?  true  : false;
 //$: k = ((t+1)%10 === 0) ? true  : false;
 
@@ -17,79 +17,89 @@ function  mark(todo, state) {   todo.state = state;
                                 todos = todos.concat(todo);
 }
 
+//________input handler (event/KeyBoard)_________
+function  keyInput(evk) {
+            // console.log(evk)
+  if(evk.target.id==='typin' || evk.target.id==='task-name' || todos.length===0)  return; 
+  //alert(k) //if user is typing or empty list return.
+  let c=0;    // counter to check if any element left over
+  let k = evk.key;// console.log(event.srcElement.style)
 
-function  keyInput(evk) { // input handler (event or keyboard)
-            // console.log(ev)
-if(evk.target.id==='typin' || evk.target.id==='task-name' || todos.length===0)  return; 
-//alert(k) //if user is typing or empty list return.
-let c=0;    // counter to check if any element left over
-let k = evk.which;// console.log(event.srcElement.style)
+  switch(k) { 
+    case 'F2':    
+        footer = !footer;	// space key Footer visible.
+        if(info) {info = false;  footer = false}
+        break;
 
-switch(k) { 
-    case 32:    footer = !footer;	// space key Footer visible.
-                if(info) {info = false;  footer = false}
-                break;
-
-    case 73:	if(footer) {info = true; footer = false}
-                else info = !info; // i key: show or remove app info 
-                break;
+    case 'i':	
+        if(footer) {info = true; footer = false}
+        else info = !info; // i key: show or remove app info 
+        break;
     
-    case 37:  
-    case 39:	// Left or Right keys pressed
-                focus = 0; 	  // focus is the selected element virtual index
-                L = (k===37) ?   true   : false;
-                                //reaching the first todo(left side) or done(right side)
-                if  (k===37)  while(todos[focus].done)  focus++;
-                else          while(!todos[focus].done) focus++;
-                break;
+    case 'ArrowLeft':  
+    case 'ArrowRight':	// Left or Right keys pressed
+        focus = 0; 	  // focus is the selected element virtual index
+        L = (k==='ArrowLeft') ?   true   : false;
+        //reaching the first todo(L) or done(R)
+        if  (L)  while(todos[focus].done)  focus++;
+        else     while(!todos[focus].done) focus++;
+        break;
 
-    case 38:   //up
-                if(L) while( focus>0 && todos[focus-1].done  ) {focus--; c++} //todo
-                else  while( focus>0 && !todos[focus-1].done ) {focus--; c++} //done
-                if(c===todos.length) break; //if all is from opposite site
-                if(focus>0) focus--; //go up -1
-                else focus = todos.length-1;
-                break;
+    case 'ArrowUp':   //up
+        if(L) while( focus>0 && todos[focus-1].done  ) {focus--; c++} //todo
+        else  while( focus>0 && !todos[focus-1].done ) {focus--; c++} //done
+        if(c===todos.length) break; //if all is from opposite site
+        if(focus>0) focus--; //go up -1
+        else focus = todos.length-1;
+        break;
 
-    case 40: 	//down
-                if(focus+1===todos.length) focus = -1;
-                if(L) while(todos[focus+1].done)  {focus++; c++} //todo
-                else  while(!todos[focus+1].done) {focus++; c++} //done
-                if(c!==todos.length) focus++; //if all is not from opposite side
-                break;                                // go down +1
+    case 'ArrowDown':  //down
+        if(focus+1===todos.length) focus = -1;
+        if(L) while(todos[focus+1].done)  {focus++; c++} //todo
+        else  while(!todos[focus+1].done) {focus++; c++} //done
+        if(c!==todos.length) focus++; //if all is not from opposite side
+        break;                                // go down +1
     
-    case 46:
-    case 110: 	// del  or   .
-                remove(todos[focus]);
-                if (focus===0) {}
-                else if (focus > 0) focus--;
-                else if(focus+1 <= todos.length) focus++;
-                updateID(); focus = 0;
-                break;
+    case 'Delete':
+        remove(todos[focus]);
+        if (focus===0) {}
+        else if (focus > 0) focus--;
+        else if(focus+1 <= todos.length) focus++;
+        updateID(); focus = 0;
+        break;
         
-    case 107:   zoom=!zoom;  //document.documentElement.style.setProperty('--size', 'calc((3vh + 4vw)/2)'); 
-                save(); load();  
-                break; // pressed +
+    case "+":   
+            zoom = !zoom;  
+            //document.documentElement.style.setProperty('--size', 'calc((3vh + 4vw)/2)'); 
+            save();  load();  
+            break; // pressed +
                 
     case 86:	view = !view;	break; // view button
 
-    case 13:	if(focus >=0)  //if enter key pressed and keyboard focused	
-                    todos[focus].done = (todos[focus].done) ?  false  : true;
-                break;
+    case 13:	 //if enter key pressed and keyboard focused	
+            if(focus>=0) todos[focus].done = 
+                (todos[focus].done) ?  false  : true;
+            break;
     
-    case 83:    if(prvKey===83) save(); break;  //to save data press double s
+    case 'F5':          //to save data press F5
+                if(prvKey==='F5') save();   break;  
     
-    case 76:    if(prvKey===76) load(); break;  //to load data press double l
+    case 'F9':          //to load data press F9
+                if(prvKey==='F9') load();   break;  
                 
-    default: 	focus=-1;   evk.target.firstChild.firstChild.focus();
-                break;
- }
-prvKey = k; // saves pressed key to be known on next input
+    default:  
+            focus=-1;  evk.target.firstChild.firstChild.focus();
+            break;
+  }
+  prvKey = k; // saves pressed key to be known on next input
+  console.log('Key Pressed: ', k);
 }
 
-const  addItem= ev=>  { let k =  ev.key ? ev.key   :'',
-                            t =  ev.target;
-                        k===13 ?        insert(t.value) 
+
+const  add_Item= ev=>  { 
+                        let t =  ev.target;
+                        if(ev.key)  k=ev.key;   else return;
+                        k==='Enter' ?  insert(t.value) 
                       : t==='button'?  insert(t.value)  :{};
 }
 //const insert = i=> console.log('yw', i)
@@ -107,9 +117,9 @@ const  addItem= ev=>  { let k =  ev.key ? ev.key   :'',
                   placeholder = '❯❯  Enter a new item...'
                   on:focus    = {e=> e.target.setAttribute('placeholder', '') }
                   on:blur     = {e=> e.target.setAttribute('placeholder', '❯❯  Enter a new item...') }
-                  on:keydown  = {addItem}
+                  on:keydown  = {add_Item}
               >
-        <button   on:pointerdown={addItem}>    <time class:timer = {k}   >   {time}    </time>
+        <button   on:pointerdown={add_Item}>    <time class:timer = {k}   >   {time}    </time>
         </button>
 </div>
 
