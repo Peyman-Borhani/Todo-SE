@@ -2,9 +2,13 @@
     
     import   {fade}     from   'svelte/transition';
         
-    const time = ()=> new Date().toISOString().slice(11,24);
-    let  k  = '',
-         tm = 0 ;
+    let     k  = '',
+            prvKey,     // The key pressed previously
+            L = true,   // L means Keyboard focus on left side (todo)
+            focus = 0,
+            footer, info, zoom, view, // App keyboard controls, as props sent to info component
+            tm = 0 ;
+    const   time = ()=> new Date().toISOString().slice(11,24);
 
 setInterval( ()=> tm=time(),  1000);
 $: k = (tm===0) ?  true  : false;

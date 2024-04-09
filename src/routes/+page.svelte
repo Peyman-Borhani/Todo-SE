@@ -29,10 +29,6 @@ console.log('sooooo ', typeof 5);
    //setTimeout( _=> {input='hello'}, 3000);
    
     let     qN   = 1,
-            focus = 0,
-            L = true,        // L means Keyboard focus on left side (todo)
-            footer, info, zoom, view, // App keyboard controls, as props sent to info component
-            prvKey,         // The key pressed previously
             task_name;
 
 
