@@ -32,17 +32,7 @@ console.log('sooooo ', typeof 5);
             task_name;
 
 
-function save() {	let tid  = 0;  let l = localStorage;
-                    task_name = document.getElementsByTagName('VAR').item(0).innerText; 
-                    console.log(task_name);
-                    Todos.forEach( (t=>{ l.setItem((task_name+tid), t.text); tid++ } ) );  // Storing Todos data
-}
 
-
-function load() { let s = localStorage.key(0);   
-                    //  s = localStorage.getItem(s); 
-                    //console.log(s) // loading Todos data
-}
 setTimeout(()=>init(), 2000);
 </script>
 
@@ -50,8 +40,7 @@ setTimeout(()=>init(), 2000);
 
 <div	class = 'board'	  on:contextmenu = {false}>
 
-<Input />	 <!--on:keydown = {e=> e.which===13 && insert(e.target.value)}  /-->
-
+<Input />
 
 <header  class = 'left'>     <h1> Todo </h1>    </header>
 
@@ -105,7 +94,7 @@ setTimeout(()=>init(), 2000);
     </div>
 </div>
 
-<Menu  {footer} {info} {zoom} {view} />
+<Menu  />
 
 
 

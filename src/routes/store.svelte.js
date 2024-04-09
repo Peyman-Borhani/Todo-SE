@@ -53,8 +53,8 @@ function  insert(inp='', typ=undefined, timer= undefined) {
     //current date/time
     let  ctm= get();  
     //__Check/set the type of input
-    const typ = ((typ===undefined || typ==='todo')) 
-                ?'todo'  :(typ==='done')?'done'  :false;
+    typ =   (typ===undefined || typ==='todo') ?  'todo'  
+                    : (typ==='done') ? 'done' :  false;
     // check if date/time input is valid [min, hr, day, month, year]
     // *implement: timer format correct? set a countdown :else false
     timer = (timer===undefined)? '_'  : get(timer);
@@ -75,7 +75,7 @@ function  insert(inp='', typ=undefined, timer= undefined) {
                                 ['timer', timer],
                                 ['tasks', false] ])
     );
-}   
+}
 /*  Todo: sort/groupBy
 function  updateID (qID=1) 	{
         D.o.forEach(t=> (!t.done)? t.qID = qID++ : {})
@@ -85,3 +85,18 @@ function  updateID (qID=1) 	{
 
 const  remove = qID=> Data.delete(qID);
 const  mark = qID=> Data.qID?.done.set(true);
+
+function save(file_name) {
+        //name= task_name = document.getElementsByTagName('VAR').item(0).innerText; 
+        let     tid  = 0,
+                S   = localStorage;
+        console.log(file_name);
+        Todos.forEach( ( (t)=>{ S.setItem((task_name+tid), t.text); tid++ } ) );  // Storing Todos data
+}//__________________________________________________________________
+
+function load(file_name) {
+    // loading Todos data
+                            let   LS = localStorage.key(file_name);   
+                            LS = localStorage.getItem(LS); 
+                            console.log(LS)
+}
