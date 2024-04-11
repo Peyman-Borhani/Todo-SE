@@ -7,11 +7,11 @@
             L = true,   // L means Keyboard focus on left side (todo)
             focus = 0,
             footer, info, zoom, view, // App keyboard controls, as props sent to info component
-            tm = 0 ;
-    const   time = ()=> new Date().toISOString().slice(11,24);
+            tm = $state('');
+    const   time = ()=> tm=new Date().toISOString().slice(11,19);
 
-setInterval( ()=> tm=time(),  1000);
-$: k = (tm===0) ?  true  : false;
+setInterval(time, 1000);
+//$: k = (tm===0) ?  true  : false;
 //$: k = ((t+1)%10 === 0) ? true  : false;
 
 
@@ -31,13 +31,14 @@ function  keyInput(evk) {
 
   switch(k) { 
     case 'F2':    
-        footer = !footer;	// space key Footer visible.
+        footer = !footer; // Footer visible.
         if(info) {info = false;  footer = false}
+        console.log('fffffffffff')
         break;
 
     case 'i':	
         if(footer) {info = true; footer = false}
-        else info = !info; // i key: show or remove app info 
+        else info = !info; //if in menu, show app info 
         break;
     
     case 'ArrowLeft':  
@@ -72,15 +73,15 @@ function  keyInput(evk) {
         updateID(); focus = 0;
         break;
         
-    case "+":   
+    case '+':   
             zoom = !zoom;  
-            //document.documentElement.style.setProperty('--size', 'calc((3vh + 4vw)/2)'); 
+            document.documentElement.style.setProperty('--size', 'calc((4vh + 4vw)/2)'); 
             save();  load();  
             break; // pressed +
                 
     case 86:	view = !view;	break; // view button
 
-    case 13:	 //if enter key pressed and keyboard focused	
+    case 'Enter':	 //if enter key pressed and keyboard focused	
             if(focus>=0) todos[focus].done = 
                 (todos[focus].done) ?  false  : true;
             break;
@@ -116,53 +117,53 @@ const  add_Item= ev=>  {
                   on:mouseover|once = {()=> document.documentElement.requestFullscreen()}
                   on:keydown        = {keyInput}
               />
-<div>
+<header>
         <input    id = 'typin'  maxlength = 24
                   placeholder = '❯❯  Enter a new item...'
                   on:focus    = {e=> e.target.setAttribute('placeholder', '') }
                   on:blur     = {e=> e.target.setAttribute('placeholder', '❯❯  Enter a new item...') }
                   on:keydown  = {add_Item}
               >
-        <button   on:pointerdown={add_Item}>    <time class:timer = {k}   >   {time}    </time>
+        <time class:timer={true}   >   {tm}    </time>
+
+        <button   on:pointerdown={add_Item}>   
         </button>
-</div>
+</header>
 
 
 <style>
 
-    div       {   grid-row: 1;                grid-column     : 1/3; }
+  header  {   grid-row: 1;                grid-column     : 1/3; }
 
-    input[id = "typin"]   { 
-                        width   : 90%;         text-align      : left;
-                        position: sticky;       font-weight     : 650;
-                        height  : 3ch;          font-size       : var(--size);
-                        top     : .1vh;         transform       : scaleY(1.06);
-                        outline : none;	        border-radius   : 2.4vmin;
-                                                background-color: #dec;
+  input[id = "typin"]   {
+        width   : 90%;          text-align      : left;
+        position: sticky;       font-weight     : 650;
+        height  : 3ch;          font-size       : var(--size);
+        top     : .1vh;         transform       : scaleY(1.06);
+        outline : none;	        border-radius   : 2.4vmin;
+                                background-color: #dec;
 }
 
-    time        { 
-                    position: fixed;            margin-top      : -.3ch;
-                    right   : 2ch;              border-radius   : 1.5ch;
-                    width   : 11ch;             text-align      : center;
-                    padding : .6ch 0;           line-height     : 1.7ch;
-                    color   : #123;           letter-spacing  : -.1pt;
-                    font-size  : 2.5ch;         background-color: rgba(4, 16, 28, .2);
-                    font-weight: 600;
+time { 
+                                border-radius   : 1.5ch;
+        width   : 180%;         text-align      : center;
+        padding : .6ch 1ch;     line-height     : 1.7ch;
+        font-size  : 3ch;       letter-spacing  : -.1pt;
+        font-weight: 600;       color           : #123;
+                                background-color: rgba(4, 16, 28, .2);
 }
 
-    .timer      {   box-shadow: 0 0 1ch #0f0  }
+.timer      {color:#000;   box-shadow: 0 0 1ch #3fa}
 
+@media  screen and (orientation: portrait) {
 
-    @media  screen and (orientation: portrait) {
+input[id="typin"]     {  grid-column: 1  }
 
-    input[id="typin"]     {  grid-column: 1  }
-
-    time      { 
-                margin-top: -.5ch;      font-size: var(--size);
-                right     : 1.8vw;      line-height: 3ch;
-                                        letter-spacing: -.3pt;
-                }
+time      { 
+                  font-size: var(--size);
+                  line-height: 3ch;
+                                    letter-spacing: .6pt;
+            }
 }
 
 </style>
