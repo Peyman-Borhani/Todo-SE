@@ -1,11 +1,12 @@
-export  {init,  insert}
+import  {Map}  from  'svelte/reactivity';
+export  {init, insert, Data}
 
-let qN= 0;  // que number
+let qN= 1;  // que number
 
-const   Data = $state(new Map());
+const   Data = new Map();
 
 const // D.o, D.one Arrays  
-    D = $state({o:[],  one:[]}); //writable({o:[],  one:[]}) ,
+    D = { o:[],   one:[] }; //writable({o:[],  one:[]}) ,
 
 const   
     def_todos =[ // default info if not initialized.
@@ -15,19 +16,13 @@ const
     ],
     def_dones =['Think of new ideas', 'Learn - practice - develop'];
 
-const get = (t = new Date().toISOString())=> 
+const getTime = (t = new Date().toISOString())=> 
     ( { id: (t.slice(0,10)+' '+ t.slice(11, 23) ),
         date: t.slice(0,10),
         time: t.slice(11, 24)
     });
 
-const
-        sort_Data=  x=>  new Map([...x].sort()),
-        rev_Data =  x=>  new Map([...x].reverse());
-
-const list = ()=> console.table(D.o);
-//________________________________________________
-
+const exec=  ()=> {for(let d of Data.keys()) console.table(d)}
 
 //_________initializing Data______________
 function   init  (todos=false,  dones=false)
@@ -38,55 +33,58 @@ function   init  (todos=false,  dones=false)
                         ? todos :def_todos);
     D.one =Array.from( (Array.isArray(dones) && dones.length>0)
                         ? dones :def_dones );
-    qN = 0;
+    qN = 1;
     D.one.forEach( dn=> insert(dn, 'done') );
-
     D.o.forEach(  td=> insert(td, 'todo') );
-
 //for(let d in D) d==='o'? console.log('heeereeeeee : ',D[d])  :{};
-list();
+//list(); 
+ exec();
 }//______________________________________________________
 
 
 //______________________Add new item________________
-function  insert(inp='', typ=undefined, timer= undefined) {
-    //current date/time
-    let  ctm= get();  
+function  insert(inp='', typ='todo', timer='_', now = getTime()) {
     //__Check/set the type of input
-    typ =   (typ===undefined || typ==='todo') ?  'todo'  
-                    : (typ==='done') ? 'done' :  false;
+    if (typ!=='todo' || typ!=='done')  typ= false;
     // check if date/time input is valid [min, hr, day, month, year]
-    timer =  (timer===undefined) ?  '_'  // todo: format the timer,
-            : (timer.length===24)? timer // correct? set countdown.
-            : false;                     // else: bad input.
+    // * TODO: format the timer ************************************
+    if (timer.length<22 || timer!=='_')  timer= false
     //test numbers || typeof inp!=='string')
-    if(!typ || !timer || inp.length<1 || inp==='')
-        return "bad input"; 
-    // item status done or not? 
-    let  done = (typ==='done')? true  :false;
+    if(!typ || !timer || inp.length<1 || inp==='' 
+            || now.length<22)  return "bad input"; 
     // Update D.o/D.one array  //remove if not needed
     (typ==='todo')  ? D.o   =[inp, ...D.o]   
                     : D.one =[inp, ...D.one];
+    // nake a unique id    // C.randomUUID();
+    let id = URL.createObjectURL(new Blob([])).slice(-36);   
     // setting a new Map item
-    Data.set( (qN++), new Map([ ['done',  done],
-                                ['item',  inp],
-                                ['id',    ctm.id],
-                                ['date',  ctm.date],
-                                ['time',  ctm.time],
-                                ['timer', timer],
-                                ['tasks', false] ])
-    );
-}
-/*  Todo: sort/groupBy
+    Data.set( id, new Map([ ['done',  (typ==='done')],
+                            ['item',  inp],
+                            ['que',   (qN++)],
+                            ['date',  now.date],
+                            ['time',  now.time],
+                            ['timer', timer],
+                            ['tasks', false] ])  );
+    URL.revokeObjectURL(id);
+}//__________________________________________________
+
+const  
+    remove = q=> Data.delete(q),
+    mark   = q=> Data[q].done.set(true),
+
+    sort_Data=  x=>  new Map([...x].sort()),
+    rev_Data =  x=>  new Map([...x].reverse()),
+    // Using Map.groupBy to categorize items based on quantity
+    sortBy  = x=> Map.groupBy(Data,x);
+//___________________________________________________
+/* 
+
+// after any changes, this must update qID's to be in order
 function  updateID (qID=1) 	{
         D.o.forEach(t=> (!t.done)? t.qID = qID++ : {})
         D.o.forEach(t=> (t.done) ? t.qID = qID++ : {})
-} // after any changes, this must update qID's to be in order
+}//__________________________________________________________
 */
-
-const  remove = qID=> Data.delete(qID);
-const  mark = qID=> Data.qID?.done.set(true);
-
 function save(file_name) {
         //name= task_name = document.getElementsByTagName('VAR').item(0).innerText; 
         let  S  =localStorage;
