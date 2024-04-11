@@ -1,66 +1,48 @@
 <script>
-    import  { fade, crossfade }   from  'svelte/transition';
-    import  { quintOut }		  from  'svelte/easing';
+    import  {send,  receive}    from  './animate.js'
     import  { flip     }	    from  'svelte/animate';
     import	  Input		        from  './Input.svelte';
     import	  Menu				from  './Menu.svelte' ;	
-    //import  {D, Data, init}     from  './store.js';
+    import  { init, insert,  Data}   from  './store.svelte.js';
 
-const [send, receive] = crossfade(
-{   duration: d => Math.sqrt(d * 400), 
-    fallback(node, params) { 
-        const style = getComputedStyle(node);
-        const transform = style.transform === 'none' ? '' : style.transform;
+let L =true;
 
-        return {duration: 900,
-                easing  : quintOut,
-                css     : t => `transform: ${transform} 
-                                scale(${t});
-                                opacity  : ${t} `
-        };
-    }
-});
+ let focus = 0;    //qN   = 1, task_name;
 
-console.log('sooooo ', typeof 5);
-
-    let   input = $state('');
+setTimeout(init, 2000);
+/*
+    let input = $state('');
     $effect(_=>console.log(input));
-   // let x= $derived(input)
-   //setTimeout( _=> {input='hello'}, 3000);
-   
-    let     qN   = 1,
-            task_name;
-
-
-
-setTimeout(()=>init(), 2000);
+    let x= $derived(input)*/
+    setTimeout(_=> {console.table(Data)}, 4000); 
 </script>
 
 
+<main	class = 'board'	  on:contextmenu = {false}>
 
-<div	class = 'board'	  on:contextmenu = {false}>
+    <Input />
 
-<Input />
+    <h1 class = 'todo'>  Todo  </h1>
+    <h1 class = 'done'> Done </h1> 
 
-<header  class = 'left'>     <h1> Todo </h1>    </header>
-
-    <div	class = 'left' 
+    <div	class = 'todo' 
             on:pointerenter = { ()=> focus = -1 }
             on:pointerleave = { ()=> focus = -1 }
         >
-        {#each Todos.filter(t => !t.done) as todo (todo.qID)}
-            <label  animate:flip    = {{duration: 600}}
-                    in:receive      = {{key: todo.qID }}
-                    out:send        = {{key: todo.qID }}
+        {#each  Data.entries() as [id, todo] (id)}
+            <label  class ='todo_itm'
+                    animate:flip    = {{duration: 600}}
+                    in:receive      = {{key: id }}
+                    out:send        = {{key: id }}
                     on:contextmenu  = {e=>alert(e.target)}
                     on:pointerenter = {e=>e.currentTarget.classList.add('hovr')}
                     on:pointerleave = {e=>e.currentTarget.classList.remove('hovr')}
-                    class:hovr      = {L && todo.qID===focus+1}
+                    class:hovr      = {L && id===focus+1}
                 >
-                    <input    type = checkbox   on:change = { ()=>{ mark(todo, true) } }
-                            > {todo.qID}. {todo.text} 
+                    <input    type = checkbox   on:change = { ()=>{mark(id)} }
+                            > {todo.item} 
                 
-                    <button   class = 'trash'   on:click  = { ()=> { remove(todo) } }
+                    <button   class = 'trash'   on:click  = { ()=> {remove(id)} }
                             > remove 
                     </button>
             </label>
@@ -68,31 +50,29 @@ setTimeout(()=>init(), 2000);
     </div>
 
 
-<header  class = 'right'>     <h1> Done </h1>    </header>
-
-    <div    class = 'right'
+    <div    class = 'done'
             on:pointerenter = {()=>focus=-1}
             on:pointerleave = {()=>focus=-1}
         >
-        {#each Todos.filter(t => t.done) as done (done.qID)}
-            <label  class           = "done"
+        {#each  Data.entries()  as  [id, done] (id)}
+            <label  class ='done_itm'
                     animate:flip    = {{duration: 600}}
-                    in:receive      = {{key: done.qID}}
-                    out:send        = {{key: done.qID}}
+                    in:receive      = {{key: id}}
+                    out:send        = {{key: id}}
                     on:pointerenter = { e=> e.currentTarget.classList.add('hovr')    }
                     on:pointerleave = { e=> e.currentTarget.classList.remove('hovr') }
-                    class:hovr      = { !L && done.qID===focus+1 }
+                    class:hovr      = { !L && id===focus+1 }
                 >
-                    <input    type = checkbox   checked   on:change = { ()=> mark(done, false)}
-                            > ✔ &nbsp {done.qID}. {done.text}
+                    <input    type = checkbox   checked   on:change = { ()=> mark(id)}
+                            > ✔ &nbsp {done.item}
 
-                    <button   class= 'trash'   on:click = {() => remove(done)} 
+                    <button   class= 'trash'   on:click = {() => remove(id)} 
                             > remove
                     </button>
             </label>
         {/each}
     </div>
-</div>
+</main>
 
 <Menu  />
 
@@ -101,9 +81,9 @@ setTimeout(()=>init(), 2000);
 <style>
 
 :global(body) { 
-    overflow : hidden;          font-size   : var(--size);
+    overflow : hidden;          --size      : calc((3vmin + 2vw)/2);
     width    : 100vw;           user-select : none; 
-    height   : 100vh;           --size      : calc((3vmin + 2vw)/2);
+    height   : 100vh;           font-size   : var(--size);
                                 background-color: #334;
     font-family:    Merriweather, helvetica neue, Helvetica, Arial, sans-serif !important
      
@@ -119,17 +99,20 @@ setTimeout(()=>init(), 2000);
 }
 
 
-header{ grid-row: 2 }	.left { grid-column: 1}        .right { grid-column: 2 }
+h1.todo, h1.done { grid-row: 2 }	
+h1.todo,   .todo  { grid-column: 1}        
+h1.done,  .done { grid-column: 2 }
 
-h1    {						        background-color: #002; 
-        grid-row   : 2;             letter-spacing  : .2ch;
-        color      : #eee;        border-radius   : 6vmin;
-        font-weight: 400;	        text-align  : center;	 	       
-                                    box-shadow  : 0 0 3vmin #888;	        								
+h1  {
+        text-align : center;    border-radius   : 6vmin;
+        font-weight: 400;       letter-spacing  : .2ch;
+        color      : #eee;    background-color: #002;
+                                box-shadow      : 0 0 3vmin #888;	        								
 }
 
 
-label {		
+label.todo_itm,
+label.done_itm {		
         position   : relative;		margin  : 0 0 2.5vh 0;
         color      : #333;		   padding : 1vh 1em .5em 2em;
         text-indent: -2.4ch;		border  : 1px solid hsl(240, 8%, 70%);
@@ -151,22 +134,22 @@ label {
 input[type = "checkbox"]  { display : none }   
 
                                     
-.done {  	
-        color: #aaa;		   	   text-align: left;
+label.done_itm {  	
+        color: #aaa;		   	   
         line-height: 1;		  		box-shadow: 0 0 0.7ch #49a;
         text-indent: -3ch;			border	  : 1px solid #000;
                                     background-color: hsla(211, 71%, 8%, .4);
 }
 
-.done::first-letter {   color: #0b9;	  font-size: 2.4ch   }
+label.done_itm::first-letter {   color: #0b9;	  font-size: 2.4ch   }
                              
-.done.hovr 	{   opacity: 1;   		background-color: rgb(8, 28, 48)   }
+label.done_itm.hovr 	{   opacity: 1;   		background-color: rgb(8, 28, 48)   }
 
 
 label:hover .trash   {opacity: 0.6}
-.trash:hover:enabled {opacity: 1; 		transform: scaleX(1.31) scaleY(1.28)}
+label> .trash:hover:enabled {opacity: 1; 		transform: scaleX(1.31) scaleY(1.28)}
 
-.trash {
+label> .trash {
         position : absolute;
         top   : 0;                  width  : 2.7ch;
         right : .3ch;              	height : 100%;
@@ -187,10 +170,12 @@ label:hover .trash   {opacity: 0.6}
             height: 90vh; 			grid-template-columns: 90vw; 
             gap   : 1vh;
     }
-    header.right	{	grid-row   : 4   }		
-    header, .right	{ 	grid-column: 1   }
+    h1.done	{	grid-row   : 4   }
+
+    h1.done, .done	{ 	grid-column: 1   }
 
     label	{	text-indent: -3.2ch   }		
+    label.done_itm {grid-row: 5}
 }
     /* To use default checkbox:
     input[type = "checkbox"]  { display : none; top : .6em;  position: absolute; left: .5em 

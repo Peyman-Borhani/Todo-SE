@@ -1,6 +1,7 @@
 <script>
     /** @type {import('./$types').LayoutData} */
-    export let data;
+   // export let data;
+    
 </script>
 
 
