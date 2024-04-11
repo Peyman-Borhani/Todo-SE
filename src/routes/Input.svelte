@@ -1,5 +1,6 @@
 <script>
-    
+    import  {Date}  from  'svelte/reactivity';
+
     import   {fade}     from   'svelte/transition';
         
     let     k  = '',
@@ -7,7 +8,7 @@
             L = true,   // L means Keyboard focus on left side (todo)
             focus = 0,
             footer, info, zoom, view, // App keyboard controls, as props sent to info component
-            tm = $state('');
+            tm   = '';
     const   time = ()=> tm=new Date().toISOString().slice(11,19);
 
 setInterval(time, 1000);
