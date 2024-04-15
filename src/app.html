@@ -10,3 +10,20 @@
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>
 </html>
+
+
+<style>
+
+  :root { 
+        overflow : hidden;          --size      : calc((3vmin + 2vw)/2);
+        width    : 100vw;           user-select : none; 
+        height   : 100vh;           font-size   : var(--size);
+                                    background-color: #334;
+        font-family:    Merriweather, helvetica neue, Helvetica, Arial, sans-serif !important
+    }
+    
+    @media screen and (orientation: portrait)
+    {   
+        :root {	--size: calc((2.8vh + 4vw)/2);  }
+    }
+    </style>

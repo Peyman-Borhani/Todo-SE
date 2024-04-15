@@ -80,15 +80,6 @@ setTimeout(init, 2000);
 
 <style>
 
-:global(body) { 
-    overflow : hidden;          --size      : calc((3vmin + 2vw)/2);
-    width    : 100vw;           user-select : none; 
-    height   : 100vh;           font-size   : var(--size);
-                                background-color: #334;
-    font-family:    Merriweather, helvetica neue, Helvetica, Arial, sans-serif !important
-     
-}
-
 .board {	
         display : grid;		    background-color: #345;
         padding : 4vmin;	    border-radius	: 2pt;  
@@ -97,7 +88,6 @@ setTimeout(init, 2000);
         overflow: hidden;       justify-content : center;
         gap     : 2vh 5vw;	    grid: 9vh 16vh auto / repeat( 2, minmax(40%, 1fr) );
 }
-
 
 h1.todo, h1.done { grid-row: 2 }	
 h1.todo,   .todo  { grid-column: 1}        
@@ -124,27 +114,24 @@ label.done_itm {
 }
 
 .hovr  {  
-        color			:black;
-        box-shadow 		: 0 0 1ch #fff !important;
+        box-shadow 	: 0 0 1ch #fff !important;
+        text-shadow	: 0 0 0.3ch #123;
+        transform  	: scaleX(1.08) scaleY(1.12);
+        color       :black;
         background-color: #fff;
-        text-shadow		: 0 0 0.3ch #123;
-        transform  		: scaleX(1.08) scaleY(1.12);
 }
 
 input[type = "checkbox"]  { display : none }   
-
-                                    
-label.done_itm {  	
-        color: #aaa;		   	   
-        line-height: 1;		  		box-shadow: 0 0 0.7ch #49a;
-        text-indent: -3ch;			border	  : 1px solid #000;
-                                    background-color: hsla(211, 71%, 8%, .4);
+                                  
+label.done_itm {  	        color     : #aaa;		   	   
+    line-height: 1;	  		box-shadow: 0 0 0.7ch #49a;
+    text-indent: -3ch;		border	  : 1px solid #000;
+                            background-color: hsla(211, 71%, 8%, .4);
 }
 
-label.done_itm::first-letter {   color: #0b9;	  font-size: 2.4ch   }
+label.done_itm::first-letter {color: #0b9;	  font-size: 2.4ch}
                              
-label.done_itm.hovr 	{   opacity: 1;   		background-color: rgb(8, 28, 48)   }
-
+label.done_itm.hovr {opacity: 1;    background-color: rgb(8, 28, 48)}
 
 label:hover .trash   {opacity: 0.6}
 label> .trash:hover:enabled {opacity: 1; 		transform: scaleX(1.31) scaleY(1.28)}
@@ -163,10 +150,8 @@ label> .trash {
 
 @media screen and (orientation: portrait)
 {   
-    :global(body)	{	--size: calc((2.8vh + 4vw)/2);  }
-
     .board  { 
-            overflow-y: scroll;     grid-template-rows: 1fr 1fr auto 1fr auto;	
+            overflow-y: scroll;     grid-template-rows: 1fr 1fr 40% 1fr 40%;	
             height: 90vh; 			grid-template-columns: 90vw; 
             gap   : 1vh;
     }
@@ -180,8 +165,9 @@ label> .trash {
     /* To use default checkbox:
     input[type = "checkbox"]  { display : none; top : .6em;  position: absolute; left: .5em 
     .done.hovr> input[type = "checkbox"]  {	opacity: 1;  }   
-    .done > input[type = "checkbox"]  {	display: block		        position: absolute;
-                                    height : var(--size);		opacity: .4;
-                                    width: var(--size) ;		transform: scale(1.2); 
+    .done > input[type = "checkbox"]  {	
+                display: block;         position: absolute;
+                height : var(--size);   opacity: .4;
+                width: var(--size) ;    transform: scale(1.2); 
     }*/
 </style>
