@@ -75,7 +75,7 @@ const
     sort_Data=  x=>  new Map([...x].sort()),
     rev_Data =  x=>  new Map([...x].reverse()),
     // Using Map.groupBy to categorize items based on quantity
-    sortBy  = x=> Map.groupBy(Data,x);
+    sortBy  = (id,x)=> Map.groupBy(Data, x=> Data.id.get(x));
 //___________________________________________________
 /* 
 
@@ -84,6 +84,11 @@ function  updateID (qID=1) 	{
         D.o.forEach(t=> (!t.done)? t.qID = qID++ : {})
         D.o.forEach(t=> (t.done) ? t.qID = qID++ : {})
 }//__________________________________________________________
+
+// Using Map.groupBy to categorize items based on quantity
+const result = 
+	Map.groupBy(store,({quantity})=> quantity<9? 'restock' :'ok');
+
 */
 function save(file_name) {
         //name= task_name = document.getElementsByTagName('VAR').item(0).innerText; 
