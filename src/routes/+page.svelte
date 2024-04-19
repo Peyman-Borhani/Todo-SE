@@ -3,7 +3,7 @@
     import  { flip     }	    from  'svelte/animate';
     import	  Input		        from  './Input.svelte';
     import	  Menu				from  './Menu.svelte' ;	
-    import  { init, insert,  Data}   from  './store.svelte.js';
+    import  {data_fn}   from  '$lib/store.svelte.js';
 
 let L =true;
 //let menu = $state(false);
