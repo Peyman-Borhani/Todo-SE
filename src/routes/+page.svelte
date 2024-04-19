@@ -6,8 +6,8 @@
     import  { init, insert,  Data}   from  './store.svelte.js';
 
 let L =true;
-
- let focus = 0;    //qN   = 1, task_name;
+//let menu = $state(false);
+let focus = 0;    //qN   = 1, task_name;
 
 setTimeout(init, 2000);
 /*

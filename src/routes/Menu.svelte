@@ -2,7 +2,7 @@
 <script>    
     import {scale, fly, fade}   from    'svelte/transition'
 
-    export  let     footer = false,
+    export  let     menu = false,
                     info   = false,
                     zoom   = false,
                     view   = false;
@@ -18,35 +18,32 @@
     let  date = d.toLocaleDateString();
     // to disappear the info menu in 3 seconds if is on and
     // there be no interaction. (info=true means info is visible)
-    function infade(t=3000) { console.log('y...es'); if(footer)  inf = setTimeout( ()=>{footer=false}, t) }
+function infade(t=3000) {if(menu)  inf = setTimeout( ()=>{menu=false}, t) }
 
-    function stay  () {  clearTimeout(inf)  }
+function stay  () {  clearTimeout(inf)  }
     
-
-    function viu ()  {   view = !view;    //if user interact romoves timeout to delay
-                         stay();
-                         vu =  ( vu==='☰') ?  '☰ ☰'  : '☰';   //document.documentElement.style.
+function viu ()  {  view = !view;  //if user interact romoves timeout to delay
+                    stay();
+                    vu = (vu==='☰') ?  '☰ ☰'  : '☰';  //document.documentElement.style.
     }
+//in case function been called by element.
+function zum ()  {zoom=!zoom;  stay()}  //zm =(zm==='╋') ? '⚊'  :'╋';  //if(zoom) {e.target.style.color = '#3F3'}
+//exit menu when info is selected.
+function infu () {if(menu)  menu=false;  info=!info;  wait=true}
 
-    function zum ()  {   zoom = !zoom;    //in case function been called by element.
-                         stay();                //zm = (zm==='╋') ? '⚊'  : '╋';  // if(zoom) {  e.target.style.color = '#3F3'  } 
-    }
-
-    function infu () {   if(footer)  footer = false; info = !info; wait = true; } //exit footer when info is selected.
-
-    function fuut (e){   if (footer && e.target.tagName!=='FOOTER') return; //clicking other buttons on the footer.
-                         if(!wait) footer = !footer; //to prevent accidental mouseover when element in animation.
-                         if (footer) stay();
-                         if (info)   info = false;
+function fuut (e){   
+                if (menu && e.target.tagName!=='FOOTER') return; //clicking other buttons on the menu.
+                if(!wait) menu = !menu; //to prevent accidental mouseover when element in animation.
+                if (menu) stay();
+                if (info)   info = false;
     }
 
     //to modify the task name yet limit the text size and behaviour
     function taskName(e){   if(task_name.length < 14)  maxText = task_name;  
-                            else {  e.target.setAttribute('contenteditable','false');
+                            else {  e.target.setAttribute('contenteditable', 'false');
                                     task_name = task_name.substring(14,-1);
                                  }
                             e.target.setAttribute('contenteditable','true');
-                            
     } 
 </script>
 
@@ -67,7 +64,7 @@
             </span>
 
 
-{:else if footer}
+{:else if menu}
         
     <date   class ='btn'   transition:fly={{ y: -40 }}>     {date}  
     </date>
@@ -88,7 +85,6 @@
                     on:mousedown  = {zum}
                 > 📥
             </span>
-
 
             <input   id    = 'task-name'        spellcheck  = "false"
                         class = 'btn'              placeholder = {task_name}
