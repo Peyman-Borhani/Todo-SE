@@ -38,9 +38,10 @@ function  Data_fn()
         D.o.forEach(  td=> insert(td, 'todo') );
     //for(let d in D) d==='o'? console.log('logArr : ',D[d])  :{};
     }
-    //______________________Add new item________________
-    function  insert(inp='', typ='todo', timer='_', now = getTime()) {
-        //__Check/set the type of input
+    //____________________Add new item__________________
+    function  insert(inp='',    typ='todo',
+                     timer='_', now = getTime())
+    {   //__Check/set the type of input
         if (typ!=='todo' || typ!=='done')  typ= false;
         // check if date/time input is valid [min, hr, day, month, year]
         // * TODO: format the timer ************************************
@@ -62,20 +63,22 @@ function  Data_fn()
                                 ['timer', timer],
                                 ['tasks', false] ])  );
         URL.revokeObjectURL(id);
-    }//__________________________________________________
-
+    }
+    //___________________Data Tools_________________________
     const  
-        remove = q=> Data.delete(q),
-        mark   = q=> Data[q].done.set(true),
-
-        sort_Data=  x=>  new Map([...x].sort()),
-        rev_Data =  x=>  new Map([...x].reverse()),
+        remove  = q=> Data.delete(q),
+        mark    = q=> Data[q].done.set(true),
+        sort    = x=>  new Map([...x].sort()),
+        rev     = x=>  new Map([...x].reverse()),
         // Using Map.groupBy to categorize items based on quantity
         sortBy  = (id,x)=> Map.groupBy(Data, x=> Data.id.get(x));
         //log=  ()=> {for(let d of Data.keys()) console.table(d)}
-    return { get 
+    return { 
+            get Data(){ return Data},   
+            init,   insert,  remove,  mark,
+            sort,   rev,     sortBy
+    }
 }//___________________________________________________
-
 /* 
 // after any changes, this must update qID's to be in order
 function  updateID (qID=1) 	{
