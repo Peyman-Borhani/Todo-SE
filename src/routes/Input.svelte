@@ -2,46 +2,41 @@
     import  {Date}  from  'svelte/reactivity';
 
     import   {fade}     from   'svelte/transition';
+    import { Data } from './store.svelte';
         
-    let     k  = '',
-            prvKey,     // The key pressed previously
-            L = true,   // L means Keyboard focus on left side (todo)
+    let     L = true,   // L means Keyboard focus on left side (todo)
+            k = '',     // current Keyboard key press
+            prvKey,     // previous Keyboard key press 
             focus = 0,
-            footer, info, zoom, view, // App keyboard controls, as props sent to info component
-            tm   = '';
-    const   time = ()=> tm=new Date().toISOString().slice(11,19);
+            inp_el,
+            menu= false,  info =false, // App/Menu keyboard controls,
+            zoom  = false,  view =false, // props to Menu component
+
+            tm    = '',     GMT  =false; // Time switch
+
+    const   time = ()=> tm=  GMT? new Date().toISOString().slice(0,19).replace('T', '  ') 
+                                : new Date().toLocaleString().slice(0,22);
 
 setInterval(time, 1000);
 //$: k = (tm===0) ?  true  : false;
 //$: k = ((t+1)%10 === 0) ? true  : false;
+const log = (n, x=false)=>  console.log(n, x? x :'');
 
-
-
-function  mark(todo, state) {   todo.state = state;
-                                remove(todo);
-                                todos = todos.concat(todo);
-}
 
 //________input handler (event/KeyBoard)_________
-function  keyInput(evk) {
-            // console.log(evk)
-  if(evk.target.id==='typin' || evk.target.id==='task-name' || todos.length===0)  return; 
-  //alert(k) //if user is typing or empty list return.
+function  kb_Control(evk) {
+//log(evk)//if user is typing or empty list return.
+if(evk.target.id==='typin' || evk.target.id==='task-name' || Data.size===0)  return; 
   let c=0;    // counter to check if any element left over
-  let k = evk.key;// console.log(event.srcElement.style)
+  let k = evk.key;  log(k)
 
   switch(k) { 
-    case 'F2':    
-        footer = !footer; // Footer visible.
-        if(info) {info = false;  footer = false}
-        console.log('fffffffffff')
+    case 'i':
+        if(info && !menu)  info=false; //info off
+        else if(!info && menu) {menu=false;   info=true} //menu off - info on
+        else menu=true; // menu visible.    //log(menu) 
         break;
 
-    case 'i':	
-        if(footer) {info = true; footer = false}
-        else info = !info; //if in menu, show app info 
-        break;
-    
     case 'ArrowLeft':  
     case 'ArrowRight':	// Left or Right keys pressed
         focus = 0; 	  // focus is the selected element virtual index
@@ -80,7 +75,7 @@ function  keyInput(evk) {
             save();  load();  
             break; // pressed +
                 
-    case 86:	view = !view;	break; // view button
+    case 'v':   view=!view;	 break;  //view button
 
     case 'Enter':	 //if enter key pressed and keyboard focused	
             if(focus>=0) todos[focus].done = 
@@ -94,77 +89,92 @@ function  keyInput(evk) {
                 if(prvKey==='F9') load();   break;  
                 
     default:  
-            focus=-1;  evk.target.firstChild.firstChild.focus();
+            focus=-1;   inp_el.focus();
             break;
   }
-  prvKey = k; // saves pressed key to be known on next input
-  console.log('Key Pressed: ', k);
+  prvKey = k; //saves key, to remember as last key pressed.
+  log('Key Pressed: ', k);
 }
 
 
 const  add_Item= ev=>  { 
                         let t =  ev.target;
                         if(ev.key)  k=ev.key;   else return;
-                        k==='Enter' ?  insert(t.value) 
-                      : t==='button'?  insert(t.value)  :{};
+                        k==='Enter' ?  insert(t.value)//insert(t.value) 
+                      : t==='button'?  insert(inp_el.value)  :{};
 }
-//const insert = i=> console.log('yw', i)
+const insert = i=> log('insert:', i)
 </script>
 
+<!-- on:mouseover|once = {()=> document.documentElement.requestFullscreen()} -->
+<svelte:window	on:keydown ={keyInput} />
 
-<svelte:window	  on:keydown|once   = {()=> document.documentElement.requestFullscreen()}
-                  on:touchstart|once= {()=> document.documentElement.requestFullscreen()}
-                  on:mousemove|once = {()=> document.documentElement.requestFullscreen()}
-                  on:mouseover|once = {()=> document.documentElement.requestFullscreen()}
-                  on:keydown        = {keyInput}
-              />
 <header>
-        <input    id = 'typin'  maxlength = 24
-                  placeholder = '❯❯  Enter a new item...'
+        <input    id = 'typin'   maxlength = 24   bind:this={inp_el}
+                  placeholder = {'❯❯  Enter a new item... '}
                   on:focus    = {e=> e.target.setAttribute('placeholder', '') }
-                  on:blur     = {e=> e.target.setAttribute('placeholder', '❯❯  Enter a new item...') }
+                  on:blur     = {e=> e.target.setAttribute('placeholder', '❯❯  Enter a new item... ') }
                   on:keydown  = {add_Item}
               >
-        <time class:timer={true}   >   {tm}    </time>
+        <time   class:timer  ={true}
+                on:click ={()=> GMT=!GMT}>   {tm}    
+        </time>
 
-        <button   on:pointerdown={add_Item}>   
+        <button   on:pointerdown={add_Item}>   ↩
         </button>
 </header>
 
 
 <style>
 
-  header  {   grid-row: 1;                grid-column     : 1/3; }
-
-  input[id = "typin"]   {
-        width   : 90%;          text-align      : left;
-        position: sticky;       font-weight     : 650;
-        height  : 3ch;          font-size       : var(--size);
-        top     : .1vh;         transform       : scaleY(1.06);
-        outline : none;	        border-radius   : 2.4vmin;
-                                background-color: #dec;
+  button  { 
+            font-size: 4ch;         font-weight : 1000;
+            rotate  : -90deg;       text-shadow : 0 0 3pt #fff;
+            scale   : 1.4  1.1;     box-shadow  : 0 0 6pt #a8c;
+            color   : #ace;       background-color: #003;
+            border  : none;         border-radius   :0 0 2.4vmin 2.4vmin;
+            height: 78%;            place-self: center;     
+            aspect-ratio: 1/1 !important;
 }
 
-time { 
-                                border-radius   : 1.5ch;
-        width   : 180%;         text-align      : center;
-        padding : .6ch 1ch;     line-height     : 1.7ch;
-        font-size  : 3ch;       letter-spacing  : -.1pt;
-        font-weight: 600;       color           : #123;
-                                background-color: rgba(4, 16, 28, .2);
+  header  { 
+            display : grid;         position     : sticky;          
+            gap     : 1pt;          border-radius: 2.4vmin;      
+            height  : 100%;         grid-template: 100% / 60% 32% 5%;
+            grid-row: 1;            grid-column  : 1/3;
+            border  : solid 2pt;    background-color: #dec;
+                                    box-shadow: inset 0 0 1ch #000
 }
 
-.timer      {color:#000;   box-shadow: 0 0 1ch #3fa}
+  input[id = "typin"]   {           
+            padding : 0;            text-align      : left;
+            width   : 100%;         font-weight     : 600;
+            height  : auto;         font-size       : var(--size);
+            outline : none;	        border-radius   : 2.4vmin 0 0 2.4vmin;
+            border  : none;         grid-column     : 1;  
+            text-indent: 1ch;       background-color: transparent;
+}
+
+  time {                          
+            color   : #123;       font-weight     : 600;
+            width   : 100%;         text-align      : left;
+            height  : auto;         text-indent     : -2pt;
+            padding : 0 1pt;        font-size       : 3ch;
+            outline : none;          
+            border  : none;         background-color: #0008;
+}
+
+.timer {color:#000;     }
 
 @media  screen and (orientation: portrait) {
 
-input[id="typin"]     {  grid-column: 1  }
+    input[id="typin"]   {grid-column: 1}
 
-time      { 
-                  font-size: var(--size);
-                  line-height: 3ch;
-                                    letter-spacing: .6pt;
-            }
+    time  { position      : relative;
+            font-size     : var(--size);
+            line-height   : 3ch;
+            letter-spacing: .6pt;
+    }
 }
 
 </style>
