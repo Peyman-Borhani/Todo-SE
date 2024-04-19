@@ -107,7 +107,7 @@ const insert = i=> log('insert:', i)
 </script>
 
 <!-- on:mouseover|once = {()=> document.documentElement.requestFullscreen()} -->
-<svelte:window	on:keydown ={keyInput} />
+<svelte:window	on:keydown ={kb_Control} />
 
 <header>
         <input    id = 'typin'   maxlength = 24   bind:this={inp_el}
