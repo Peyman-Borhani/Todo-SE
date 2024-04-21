@@ -4,14 +4,14 @@
     import   {fade}     from   'svelte/transition';
     //import { Data } from './store.svelte';
         
-    let        // L means Keyboard focus on left side (todo)
+    let        
             k = '',     // current Keyboard key press
             prvKey,     // previous Keyboard key press 
             focus = 0,
             inp_el,
             ISO  =false; // Local/ISO Time switch
     // App/Menu kb control props
-    let  {menu  =false,  info =false, L = true,
+    let  {menu  =false,  info =false, L = true,// L means Keyboard focus on left side (todo)
           zoom  =false,  view =false} = $props();
    
     let     time =  $state(' ');
@@ -110,22 +110,22 @@ const  add_Item= ev=>  {
 const insert = i=> log('insert:', i)
 </script>
 
-<!-- on:mouseover|once = {()=> document.documentElement.requestFullscreen()} -->
-<svelte:window	on:keydown ={kb_Control} />
+<!-- onmouseover|once = {()=> document.documentElement.requestFullscreen()} -->
+<svelte:window	onkeydown ={kb_Control} />
 
 <header>
         <input    id = 'typin'   maxlength = 36   bind:this={inp_el}
                   placeholder = {'❯❯  Enter a new item... '}
-                  on:focus    = {e=> e.target.setAttribute('placeholder', '') }
-                  on:blur     = {e=> e.target.setAttribute('placeholder', '❯❯  Enter a new item... ') }
-                  on:keydown  = {add_Item}
+                  onfocus    = {e=> e.target.setAttribute('placeholder', '') }
+                  onblur     = {e=> e.target.setAttribute('placeholder', '❯❯  Enter a new item... ') }
+                  onkeydown  = {add_Item}
               >
         <time   class:timer  ={true}
         transition:fade
-                on:click ={()=> ISO=!ISO}>   {time}    
+                onclick ={()=> ISO=!ISO}>   {time}    
         </time>
 
-        <button   on:pointerdown={add_Item}>   ↩
+        <button   onpointerdown={add_Item}>   ↩
         </button>
 </header>
 

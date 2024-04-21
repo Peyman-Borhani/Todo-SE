@@ -18,7 +18,7 @@ setTimeout(()=>Store.init(), 1000);
 </script>
 
 
-<main	class = 'board'	  on:contextmenu = {false}>
+<main	class = 'board'	  oncontextmenu = {false}>
 
     <Input />
 
@@ -26,23 +26,23 @@ setTimeout(()=>Store.init(), 1000);
     <h1 class = 'done'> Done </h1> 
 
     <div	class = 'todo' 
-            on:pointerenter = { ()=> focus = -1 }
-            on:pointerleave = { ()=> focus = -1 }
+            onpointerenter = { ()=> focus = -1 }
+            onpointerleave = { ()=> focus = -1 }
         >
         {#each  Store.Data.entries() as [id, todo] (id)}
             <label  class ='todo_itm'
                     animate:flip    = {{duration: 600}}
                     in:receive      = {{key: id }}
                     out:send        = {{key: id }}
-                    on:contextmenu  = {e=>alert(e.target)}
-                    on:pointerenter = {e=>e.currentTarget.classList.add('hovr')}
-                    on:pointerleave = {e=>e.currentTarget.classList.remove('hovr')}
+                    oncontextmenu  = {e=>alert(e.target)}
+                    onpointerenter = {e=>e.currentTarget.classList.add('hovr')}
+                    onpointerleave = {e=>e.currentTarget.classList.remove('hovr')}
                     class:hovr      = {L && id===focus+1}
                 >
-                    <input    type = checkbox   on:change = { ()=>{mark(id)} }
+                    <input    type = checkbox   onchange = { ()=>{mark(id)} }
                             > {todo.item} 
                 
-                    <button   class = 'trash'   on:click  = { ()=> {remove(id)} }
+                    <button   class = 'trash'   onclick  = { ()=> {remove(id)} }
                             > remove 
                     </button>
             </label>
@@ -51,22 +51,22 @@ setTimeout(()=>Store.init(), 1000);
 
 
     <div    class = 'done'
-            on:pointerenter = {()=>focus=-1}
-            on:pointerleave = {()=>focus=-1}
+            onpointerenter = {()=>focus=-1}
+            onpointerleave = {()=>focus=-1}
         >
         {#each  Store.Data.entries()  as  [id, done] (id)}
             <label  class ='done_itm'
                     animate:flip    = {{duration: 600}}
                     in:receive      = {{key: id}}
                     out:send        = {{key: id}}
-                    on:pointerenter = { e=> e.currentTarget.classList.add('hovr')    }
-                    on:pointerleave = { e=> e.currentTarget.classList.remove('hovr') }
+                    onpointerenter = { e=> e.currentTarget.classList.add('hovr')    }
+                    onpointerleave = { e=> e.currentTarget.classList.remove('hovr') }
                     class:hovr      = { !L && id===focus+1 }
                 >
-                    <input    type = checkbox   checked   on:change = { ()=> mark(id)}
+                    <input    type = checkbox   checked   onchange = { ()=> mark(id)}
                             > ✔ &nbsp {done.item}
 
-                    <button   class= 'trash'   on:click = {() => remove(id)} 
+                    <button   class= 'trash'   onclick = {() => remove(id)} 
                             > remove
                     </button>
             </label>

@@ -53,8 +53,8 @@ function fuut (e){
 {#if info}      
             <span   id = 'help'
                     transition:fade
-                    on:pointerdown  = {infu}
-                    on:pointerleave = {infade}                            
+                    onpointerdown  = {infu}
+                    onpointerleave = {infade}                            
 
                     > A Perfect Todo app !<br> <br>
                     Interact by touch/hold / key / mouse<br> 
@@ -69,30 +69,30 @@ function fuut (e){
     <date   class ='btn'   transition:fly={{ y: -40 }}>     {date}  
     </date>
 
-    <footer  on:mouseleave  = {infade}
+    <footer  onmouseleave  = {infade}
              transition:fly = {{ y: 100, duration: 1000 }} 
-             on:mousedown   = {fuut}
-             on:mouseover   = {stay}
-             on:x = {infade(7000)}
+             onmousedown   = {fuut}
+             onmouseover   = {stay}
+             onx = {infade(7000)}
     >
-            <span   id    = '#_Info'    on:click = {infu}
+            <span   id    = '#_Info'    onclick = {infu}
                     class = 'btn i'     class:pressed = {info}        
             >  About 
             </span>
 
             <span   id = 'zoom'      class = 'btn'      transition:fade
                     class:pressed = {zoom}
-                    on:mousedown  = {zum}
+                    onmousedown  = {zum}
                 > 📥
             </span>
 
             <input   id    = 'task-name'        spellcheck  = "false"
                         class = 'btn'              placeholder = {task_name}
-                        type  = 'text'             on:keypress = {taskName}
+                        type  = 'text'             onkeypress = {taskName}
                                                 bind:value = {task_name}
             >                                     
             <span   id = 'view'     class = 'btn'    class:pressed = {view}      
-                    on:mousedown = {viu}
+                    onmousedown = {viu}
                     transition:scale = "{{duration: 1000,  opacity: .3, start: 0.3}}"  
                 > {vu}    
             </span>
@@ -101,12 +101,12 @@ function fuut (e){
 {:else}     
         <span   class = 'btn i'
                 transition:fly = "{{ y: -400, duration: 1000 }}"
-                on:mouseover   = {fuut}
-                on:mousedown   = {fuut}
-                on:introend    = { ()=> wait = false }
-                on:outroend    = { ()=> wait = false }
-                on:introstart  = { ()=> wait = true  }
-                on:outrostart  = { ()=> wait = true  }
+                onmouseover   = {fuut}
+                onmousedown   = {fuut}
+                onintroend    = { ()=> wait = false }
+                onoutroend    = { ()=> wait = false }
+                onintrostart  = { ()=> wait = true  }
+                onoutrostart  = { ()=> wait = true  }
             >   i
         </span>
 {/if}
