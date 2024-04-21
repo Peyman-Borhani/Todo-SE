@@ -1,20 +1,20 @@
 <script>
-    import  {send,  receive}    from  './animate.js'
-    import  { flip     }	    from  'svelte/animate';
-    import	  Input		        from  './Input.svelte';
-    import	  Menu				from  './Menu.svelte' ;	
-    import  {Data_fn}           from  '$lib/store.svelte.js';
+  import    {send, receive} from    './animate.js'
+  import    { flip }        from    'svelte/animate';
+  import    Input           from    './Input.svelte';
+  import    Menu            from    './Menu.svelte' ;	
+  import    { make_Store }       from    '$lib/store.svelte.js';
 
-let L =true;
-//let menu = $state(false);
-let focus = 0;    //qN   = 1, task_name;
+let  L =true,    focus =0;
 
-setTimeout(init, 2000);
+const Store  =   make_Store();
+//qN = 1, task_name; //let menu = $state(false);
+setTimeout(()=>Store.init(), 1000);
 /*
     let input = $state('');
     $effect(_=>console.log(input));
     let x= $derived(input)*/
-    setTimeout(_=> {console.table(Data)}, 4000); 
+    setTimeout(_=> {console.log(Store.Data.keys())}, 3000); 
 </script>
 
 
@@ -29,7 +29,7 @@ setTimeout(init, 2000);
             on:pointerenter = { ()=> focus = -1 }
             on:pointerleave = { ()=> focus = -1 }
         >
-        {#each  Data.entries() as [id, todo] (id)}
+        {#each  Store.Data.entries() as [id, todo] (id)}
             <label  class ='todo_itm'
                     animate:flip    = {{duration: 600}}
                     in:receive      = {{key: id }}
@@ -54,7 +54,7 @@ setTimeout(init, 2000);
             on:pointerenter = {()=>focus=-1}
             on:pointerleave = {()=>focus=-1}
         >
-        {#each  Data.entries()  as  [id, done] (id)}
+        {#each  Store.Data.entries()  as  [id, done] (id)}
             <label  class ='done_itm'
                     animate:flip    = {{duration: 600}}
                     in:receive      = {{key: id}}
