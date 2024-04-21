@@ -1,5 +1,5 @@
-//import  {Map}  from  'svelte/reactivity';
-export  {Data_fn}
+import  {Map}  from  'svelte/reactivity';
+export  {make_Store}
 
 let qN= 1;  // que number
 
@@ -21,13 +21,13 @@ const
     def_dones =['Think of new ideas', 'Learn - practice - develop'];
 
 
-function  Data_fn()
+function  make_Store()
 {
     const   Data = $state(new Map());
     //_________initializing Data______________
     function   init  (todos=false,  dones=false)
     {
-        if(D.o.length>0 || D.one.length>0)  return  "error: initialized already";
+        if(D.o.length>0 || D.one.length>0)  return; // "error: initialized already";
     //assign todos/dones params if it exist && valid else default values  
         D.o   =Array.from( (Array.isArray(todos) && todos.length>0)
                             ? todos :def_todos);
@@ -71,12 +71,13 @@ function  Data_fn()
         sort    = x=>  new Map([...x].sort()),
         rev     = x=>  new Map([...x].reverse()),
         // Using Map.groupBy to categorize items based on quantity
-        sortBy  = (id,x)=> Map.groupBy(Data, x=> Data.id.get(x));
-        //log=  ()=> {for(let d of Data.keys()) console.table(d)}
+        sortBy  = (id, x)=> Map.groupBy(Data=> Data.get(id).get(x)),
+        log     = ()=> {for(let d of Data.keys()) console.table(d)};
+
     return { 
-            get Data(){ return Data},   
+            get Data() {return Data},   
             init,   insert,  remove,  mark,
-            sort,   rev,     sortBy
+            sort,   rev,     sortBy,  log
     }
 }//___________________________________________________
 /* 
