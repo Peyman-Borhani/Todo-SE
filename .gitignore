@@ -15,3 +15,4 @@ vite.config.ts.timestamp-*
 .gitignore
 pnpm-lock.yaml
 src/routes/BAK.zip
+src/lib/BAK.zip
