@@ -1,24 +1,25 @@
 <script>
-    import  {Date}  from  'svelte/reactivity';
+   //import  {Date}  from  'svelte/reactivity';
 
     import   {fade}     from   'svelte/transition';
-    import { Data } from './store.svelte';
+    //import { Data } from './store.svelte';
         
-    let     L = true,   // L means Keyboard focus on left side (todo)
+    let        // L means Keyboard focus on left side (todo)
             k = '',     // current Keyboard key press
             prvKey,     // previous Keyboard key press 
             focus = 0,
             inp_el,
-            menu= false,  info =false, // App/Menu keyboard controls,
-            zoom  = false,  view =false, // props to Menu component
-
-            tm    = '',     GMT  =false; // Time switch
-
-    const   time = ()=> tm=  GMT? new Date().toISOString().slice(0,19).replace('T', '  ') 
+            ISO  =false; // Local/ISO Time switch
+    // App/Menu kb control props
+    let  {menu  =false,  info =false, L = true,
+          zoom  =false,  view =false} = $props();
+   
+    let     time =  $state(' ');
+    const   tm  =()=> time = ISO? new Date().toISOString().slice(0,19).replace('T', '  ') 
                                 : new Date().toLocaleString().slice(0,22);
 
-setInterval(time, 1000);
-//$: k = (tm===0) ?  true  : false;
+setInterval(tm, 1000);
+//$: k = (time===0) ?  true  : false;
 //$: k = ((t+1)%10 === 0) ? true  : false;
 const log = (n, x=false)=>  console.log(n, x? x :'');
 
@@ -27,10 +28,13 @@ const log = (n, x=false)=>  console.log(n, x? x :'');
 function  kb_Control(evk) {
 //log(evk)//if user is typing or empty list return.
 if(evk.target.id==='typin' || evk.target.id==='task-name' || Data.size===0)  return; 
-  let c=0;    // counter to check if any element left over
-  let k = evk.key;  log(k)
-
+  let   c=0,    // counter to check if any element left over
+        k = evk.key,
+        ctrl =(evk.ctrlKey || evk.metaKey) ? true  :false;
+  log(k);
+  
   switch(k) { 
+    
     case 'i':
         if(info && !menu)  info=false; //info off
         else if(!info && menu) {menu=false;   info=true} //menu off - info on
@@ -110,14 +114,15 @@ const insert = i=> log('insert:', i)
 <svelte:window	on:keydown ={kb_Control} />
 
 <header>
-        <input    id = 'typin'   maxlength = 24   bind:this={inp_el}
+        <input    id = 'typin'   maxlength = 36   bind:this={inp_el}
                   placeholder = {'❯❯  Enter a new item... '}
                   on:focus    = {e=> e.target.setAttribute('placeholder', '') }
                   on:blur     = {e=> e.target.setAttribute('placeholder', '❯❯  Enter a new item... ') }
                   on:keydown  = {add_Item}
               >
         <time   class:timer  ={true}
-                on:click ={()=> GMT=!GMT}>   {tm}    
+        transition:fade
+                on:click ={()=> ISO=!ISO}>   {time}    
         </time>
 
         <button   on:pointerdown={add_Item}>   ↩
