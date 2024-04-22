@@ -11,8 +11,9 @@
             inp_el,
             ISO  =false; // Local/ISO Time switch
     // App/Menu kb control props
-    let  {menu  =false,  info =false, L = true,// L means Keyboard focus on left side (todo)
-          zoom  =false,  view =false} = $props();
+    let  {menu  =$bindable(false),  info =$bindable(false), L = $bindable(true),// L means Keyboard focus on left side (todo)
+          zoom  =$bindable(false),  view =$bindable(false)
+    } = $props();
    
     let     time =  $state(' ');
     const   tm  =()=> time = ISO? new Date().toISOString().slice(0,19).replace('T', '  ') 
@@ -27,7 +28,7 @@ const log = (n, x=false)=>  console.log(n, x? x :'');
 //________input handler (event/KeyBoard)_________
 function  kb_Control(evk) {
 //log(evk)//if user is typing or empty list return.
-if(evk.target.id==='typin' || evk.target.id==='task-name' || Data.size===0)  return; 
+if(evk.target.id==='typin' || evk.target.id==='task-name')  return; 
   let   c=0,    // counter to check if any element left over
         k = evk.key,
         ctrl =(evk.ctrlKey || evk.metaKey) ? true  :false;
@@ -113,8 +114,8 @@ const insert = i=> log('insert:', i)
 <!-- onmouseover|once = {()=> document.documentElement.requestFullscreen()} -->
 <svelte:window	onkeydown ={kb_Control} />
 
-<header>
-        <input    id = 'typin'   maxlength = 36   bind:this={inp_el}
+<section>
+        <input    id = 'typin'   maxlength = 38   bind:this={inp_el}
                   placeholder = {'❯❯  Enter a new item... '}
                   onfocus    = {e=> e.target.setAttribute('placeholder', '') }
                   onblur     = {e=> e.target.setAttribute('placeholder', '❯❯  Enter a new item... ') }
@@ -127,58 +128,66 @@ const insert = i=> log('insert:', i)
 
         <button   onpointerdown={add_Item}>   ↩
         </button>
-</header>
+</section>
 
 
 <style>
 
-  button  { 
-            font-size: 4ch;         font-weight : 1000;
-            rotate  : -90deg;       text-shadow : 0 0 3pt #fff;
-            scale   : 1.4  1.1;     box-shadow  : 0 0 6pt #a8c;
-            color   : #ace;       background-color: #003;
-            border  : none;         border-radius   :0 0 2.4vmin 2.4vmin;
-            height: 78%;            place-self: center;     
-            aspect-ratio: 1/1 !important;
+  section  { 
+            bottom  : 0;            display      : grid;         
+            left    : 0;            position     : absolute;          
+            border  : solid 3pt;    border-radius: 2.4vmin 2.4vmin 2.4vmin 1pt;   
+            width   : 92dvi;        grid-template: auto / 70% 26% 9%;
+            height  : auto;         box-shadow   : inset 0 0 1ch #000;       
+            align-self: end;        background-color: #dec;
+            font-family:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-  header  { 
-            display : grid;         position     : sticky;          
-            gap     : 1pt;          border-radius: 2.4vmin;      
-            height  : 100%;         grid-template: 100% / 60% 32% 5%;
-            grid-row: 1;            grid-column  : 1/3;
-            border  : solid 2pt;    background-color: #dec;
-                                    box-shadow: inset 0 0 1ch #000
+  button  {                         line-height: .8ch;
+            font-size: 5.8ch;       font-weight : 1000;
+            height   : 100%;        text-shadow : 0 0 3pt #fff;
+            rotate   : -90deg;      box-shadow  : 0 0 6pt #a8c;
+            margin-left : -4pt;     border      : solid 1pt #000;
+            aspect-ratio: 1.1/1;    border-radius: 0 0 2.4vmin 2.4vmin;
+            color    : #ace;      background-color: #003;
 }
 
   input[id = "typin"]   {           
             padding : 0;            text-align      : left;
-            width   : 100%;         font-weight     : 600;
-            height  : auto;         font-size       : var(--size);
+            width   : 100%;         font-weight     : 500;
+            height  : auto;         font-size       : 2.8vw;
             outline : none;	        border-radius   : 2.4vmin 0 0 2.4vmin;
             border  : none;         grid-column     : 1;  
             text-indent: 1ch;       background-color: transparent;
+                                    text-shadow: 0 0 1pt  #000;
 }
 
   time {                          
-            color   : #123;       font-weight     : 600;
-            width   : 100%;         text-align      : left;
-            height  : auto;         text-indent     : -2pt;
-            padding : 0 1pt;        font-size       : 3ch;
-            outline : none;          
-            border  : none;         background-color: #0008;
+            font-size: 2.8ch;       font-weight     : 600;
+            width   : 100%;         text-align      : start;
+            height  : auto;         padding-left    : 1ch;
+            outline : none;         letter-spacing  : 3pt ; 
+            border  : none;         text-shadow: 0 0 1pt #000;
+            color   : #123;       background-color: #0008;
 }
 
 .timer {color:#000;     }
 
-@media  screen and (orientation: portrait) {
-
-    input[id="typin"]   {grid-column: 1}
-
+@media  screen and (orientation: portrait)
+{
+    section { height: 8dvh;     position: fixed;
+              width : 99dvw;   bottom  : 0;
+              grid-template: auto / 60% 24% 11%  ;
+             font-size: var(--size); 
+    }
+    input[id="typin"]   {grid-column: 1;  text-overflow: ellipsis; place-self: center;}
+    button{height: 82%; margin-left: -7pt;} 
     time  { position      : relative;
-            font-size     : var(--size);
-            line-height   : 3ch;
-            letter-spacing: .6pt;
+            font-size: 1.5ch !important; 
+            line-height   : 3.6ch;
+            letter-spacing: .5pt;
+            place-self: center;
+            height: 100%;
     }
 }
 
