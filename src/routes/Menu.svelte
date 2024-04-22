@@ -51,7 +51,7 @@ function fuut (e){
 <var  id={task_name} style = 'display: none'> {task_name} </var>
 
 {#if info}      
-            <span   id = 'help'
+            <span   id = '_Help'
                     transition:fade
                     onpointerdown  = {infu}
                     onpointerleave = {infade}                            
@@ -80,18 +80,18 @@ function fuut (e){
             >  About 
             </span>
 
-            <span   id = 'zoom'      class = 'btn'      transition:fade
+            <span   id = '_Zoom'      class = 'btn'      transition:fade
                     class:pressed = {zoom}
                     onmousedown  = {zum}
                 > 📥
             </span>
 
-            <input   id    = 'task-name'        spellcheck  = "false"
-                        class = 'btn'              placeholder = {task_name}
-                        type  = 'text'             onkeypress = {taskName}
-                                                bind:value = {task_name}
+            <input  id    ='_Task-Name'   spellcheck ='false'
+                    class ='btn'          placeholder={task_name}
+                    type  ='text'         onkeypress = {taskName}
+                                          bind:value = {task_name}
             >                                     
-            <span   id = 'view'     class = 'btn'    class:pressed = {view}      
+            <span   id = '_View'     class = 'btn'    class:pressed = {view}      
                     onmousedown = {viu}
                     transition:scale = "{{duration: 1000,  opacity: .3, start: 0.3}}"  
                 > {vu}    
@@ -100,7 +100,7 @@ function fuut (e){
 
 {:else}     
         <span   class = 'btn i'
-                transition:fly = "{{ y: -400, duration: 1000 }}"
+                transition:fly = "{{ y: +500, duration: 800 }}"
                 onmouseover   = {fuut}
                 onmousedown   = {fuut}
                 onintroend    = { ()=> wait = false }
@@ -147,35 +147,29 @@ function fuut (e){
                                         background-color: rgba(4, 16, 30, .8);             
 }
 
-  .i     {   
-            align-self : flex-end;      padding: 2vmax 3vmax;
-            font-weight: 600;           right  : 4vmin;  
-                                        width  : fit-content;                                            
-}
-
-  #info    {font-size: 3.4ch;   font-weight: 500;   padding: 1.6vmax 1.2vmax}
+  #_Info    {font-size: 3.4ch;   font-weight: 500;   padding: 1.6vmax 1.2vmax}
 
 
-  #view   {   
+  #_View   {   
             display: flex;              align-self: flex-start;
             left   : 12vw;              width: max-content;
             word-spacing: -1.9pt;       transform: scaleX(.8);
             font-weight : 500;          font-size: 4.6vmax;   
                                         padding  : 1vmax 2vmax;
 }
-  #view.pressed   {left: 6.4vw;    transform: scaleX(.6) scaleY(1)}
+  #_View.pressed   {left: 6.4vw;    transform: scaleX(.6) scaleY(1)}
 
 
-  #view, #zoom    {border-radius: 5ch}
+  #_View, #_Zoom    {border-radius: 5ch}
 
 
-  #zoom    {
+  #_Zoom    {
             font-weight: 900;           align-self: flex-start;           
             font-size  : 3vmax;         padding: 1.8vmax 1.4vmax;                                           
 }
 
 
-  #task-name {   
+  #_Task-Name {   
             font-size   : 3vmax;        padding  : 1.6vmax 1.2vmax 1.6vmax 1vmax;  
             font-weight : 500;          outline  : none;
             align-self  : center;       max-width: 42vw;
@@ -185,7 +179,7 @@ function fuut (e){
                                         background-color: rgba(8, 0, 48, .7);
 }
 
-  #help  {   
+  #_Help  {   
             position: fixed;            width : fit-content !important;
             bottom  : 1vh;              height: fit-content !important;
             right   : 1vw;              background-color: rgba(4, 16, 28, .94);
@@ -193,16 +187,22 @@ function fuut (e){
 
   date  {   
             position: fixed;            width  : 12ch;
-            left    : 25vw;             height : 2ch;
+            left    : 9vw;              height : 2ch;
             top     : 1vh;              padding: .4ch 0;
             color   : #95a;           font-size: 3ch;
                                         background-color: rgba(4, 16, 28, .9);
 }
 
+  .i    {   
+            align-self : flex-start;    padding: 2vmax 3vmax;
+            font-weight: 600;           right  : 3vmin;  
+            top: 1vh;                   width  : fit-content;                                            
+}
+
 @media  screen  and  (orientation: landscape) { 
 
-            #view { display: none}  
-            #task-name  {left:unset} 
+            #_View { display: none}  
+            #_Task-Name  {left:unset} 
             date { left: 8vw}
 }
 </style>
