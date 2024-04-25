@@ -13,20 +13,17 @@
 
 
 <style>
-
-  :root { 
-        overflow : hidden;          --size      : calc((3vmin + 2vw)/2);
-        width    : 100vw;           user-select : none; 
-        height   : 100vh;           font-size   : var(--size);
-                                    background-color: #334;
-        font-family:   system-ui, -apple-system, Segoe UI, Ubuntu, Cantarell,
-                        Noto Sans, sans-serif, BlinkMacSystemFont, "Segoe UI",
-                        Merriweather, helvetica neue, Helvetica, Arial, sans-serif,
-                        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+:root { 
+    overflow : hidden;      --size      : calc((2vmin + 3vw + 1rem)/3);
+    width    : 100vw;       user-select : none; 
+    height   : 100vh;       font-size   : var(--size);
+                            background-color: #334;
+    font-family:  system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Ubuntu, Cantarell,
+                Noto Sans, "Segoe UI", Merriweather, helvetica neue, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     }
     
     @media screen and (orientation: portrait)
     {   
-        :root {	--size: calc((2.8vh + 4vw)/2);  }
+        :root {--size: calc((2vh + 4vw + 1rem)/3);  background-color: #000;}
     }
     </style>
