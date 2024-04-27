@@ -18,12 +18,15 @@
     width    : 100vw;       user-select : none; 
     height   : 100vh;       font-size   : var(--size);
                             background-color: #334;
+                            box-shadow: inset 0 0 2ch #000;
     font-family:  system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Ubuntu, Cantarell,
                 Noto Sans, "Segoe UI", Merriweather, helvetica neue, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     }
     
     @media screen and (orientation: portrait)
     {   
-        :root {--size: calc((2vh + 4vw + 1rem)/3);  background-color: #000;}
+      :root { --size: calc((2vh + 4vw + 1rem)/3);  
+                background-color: #000;
+      }
     }
     </style>
