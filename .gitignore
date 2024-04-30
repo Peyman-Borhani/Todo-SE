@@ -5,6 +5,9 @@ node_modules
 /package
 /src/lib/GL
 /src/routes/BAK
+.tmp
+.bak
+.BAK
 .env
 .env.*
 !.env.example
@@ -14,5 +17,4 @@ vite.config.ts.timestamp-*
 .vscode/extensions.json
 .gitignore
 pnpm-lock.yaml
-src/routes/BAK.zip
 src/lib/BAK.zip
