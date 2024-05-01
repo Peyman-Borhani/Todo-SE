@@ -24,6 +24,6 @@
 	"dependencies": {
 		"@lucia-auth/adapter-drizzle": "^1.0.7",
 		"better-sqlite3": "^9.6.0",
-		"drizzle-orm": "^0.30.9"
+		"drizzle-orm": "^0.30.10"
 	}
 }
