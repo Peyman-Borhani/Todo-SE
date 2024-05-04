@@ -195,8 +195,8 @@ function fuut (e){
 
   .i    {   
             align-self : flex-start;    padding: 2vmax 3vmax;
-            font-weight: 600;           right  : 3vmin;  
-            top: 1vh;                   width  : fit-content;                                            
+            font-weight: 600;           right  : 1vmin;  
+            top: 2vh;                   width  : fit-content;                                            
 }
 
 @media  screen  and  (orientation: landscape) { 
