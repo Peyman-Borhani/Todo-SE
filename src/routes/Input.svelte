@@ -121,44 +121,49 @@ const insert = i=> log('insert:', i)
                   onblur     = {e=> e.target.setAttribute('placeholder', '❯❯  Enter a new item... ') }
                   onkeydown  = {add_Item}
               >
-        <time   class:timer  ={true}
-        transition:fade
-                onclick ={()=> ISO=!ISO}>   {time}    
-        </time>
 
         <button   onpointerdown={add_Item}>   ↩
         </button>
+        
+        <time   class:timer ={true}    transition:fade
+                onclick     ={()=> ISO=!ISO}>   {time}    
+        </time>
+
 </section>
 
 
 <style>
 
   section  { 
-            bottom  : 0;            display      : grid;         
+            bottom  : -2pt;            display      : grid;         
             left    : 0;            position     : absolute;          
-            border  : solid 3pt;    border-radius: 2.4vmin 2.4vmin 2.4vmin 1pt;   
-            width   : 92dvi;        grid-template: auto / 70% 26% 9%;
+            border  : solid 3pt;    border-radius: 0 2.4vmin 0 1pt;   
+            width   : 98dvi;        grid-template: auto / 70% 24% 18%;
             height  : auto;         box-shadow   : inset 0 0 1ch #000;       
             align-self: end;        background-color: #dec;
             font-family:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-  button  {                         line-height: .8ch;
-            font-size: 5.8ch;       font-weight : 1000;
+  button  {                         line-height : 0;
+            font-size: 6ch;         font-weight : 1000;
             height   : 100%;        text-shadow : 0 0 3pt #fff;
             rotate   : -90deg;      box-shadow  : 0 0 6pt #a8c;
-            margin-left : -4pt;     border      : solid 1pt #000;
-            aspect-ratio: 1.1/1;    border-radius: 0 0 2.4vmin 2.4vmin;
-            color    : #ace;      background-color: #003;
+            color    : #ace;      border      : solid 1pt #000;
+            position : absolute;    align-self  : center;
+            justify-self: end;      border-radius: 0 0 2.4vmin 2.4vmin;
+            aspect-ratio: 1.1/1;    background-color: #003;
+            margin-right: -4pt
+                                    
+                                    
 }
 
   input[id = "typin"]   {           
-            padding : 0;            text-align      : left;
+                                    text-align      : left;
             width   : 100%;         font-weight     : 500;
             height  : auto;         font-size       : 2.8vw;
-            outline : none;	        border-radius   : 2.4vmin 0 0 2.4vmin;
+            outline : none;	        text-indent     : 1ch;
             border  : none;         grid-column     : 1;  
-            text-indent: 1ch;       background-color: transparent;
+            padding : 0;            background-color: transparent;
                                     text-shadow: 0 0 1pt  #000;
 }
 
@@ -176,12 +181,12 @@ const insert = i=> log('insert:', i)
 @media  screen and (orientation: portrait)
 {
     section { height: 8dvh;     position: fixed;
-              width : 99dvw;   bottom  : 0;
+              width : 96dvw;   bottom  : 0;
               grid-template: auto / 60% 24% 11%  ;
              font-size: var(--size); 
     }
-    input[id="typin"]   {grid-column: 1;  text-overflow: ellipsis; place-self: center;}
-    button{height: 82%; margin-left: -7pt;} 
+    input[id="typin"]   {grid-column: 1;  text-overflow: ellipsis; align-self: center;}
+    button{height: 94%} 
     time  { position      : relative;
             font-size: 1.5ch !important; 
             line-height   : 3.6ch;
