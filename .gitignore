@@ -5,9 +5,9 @@ node_modules
 /package
 /src/lib/GL
 /src/routes/BAK
-.tmp
-.bak
-.BAK
+*.tmp
+*.bak
+*.BAK
 .env
 .env.*
 !.env.example
