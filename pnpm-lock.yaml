@@ -11,6 +11,9 @@ importers:
       '@lucia-auth/adapter-drizzle':
         specifier: ^1.0.7
         version: 1.0.7(lucia@3.2.0)
+      '@lucia-auth/adapter-sqlite':
+        specifier: ^3.0.1
+        version: 3.0.1(better-sqlite3@9.6.0)(lucia@3.2.0)
       better-sqlite3:
         specifier: ^9.6.0
         version: 9.6.0
@@ -536,6 +539,18 @@ packages:
     resolution: {integrity: sha512-X/V7fLBca8EC/gPXCntwbQpb0+F9oEuRoHElvsi9rCrdnGhCMNxHgwAvgiQ6pes+rIYpyvx4n3hvjqo/fPo03A==}
     peerDependencies:
       lucia: 3.x
+
+  '@lucia-auth/adapter-sqlite@3.0.1':
+    resolution: {integrity: sha512-bzr8+HALrbiYMb/+oL1SAnjbgFqlPs/Kj4lO57t/VvbXzmbpQEKk5Nv6hMpvWSkGAR9LbxYeQAtecikpKZVB0w==}
+    peerDependencies:
+      '@libsql/client': ^0.3.0
+      better-sqlite3: 8.x - 9.x
+      lucia: 3.x
+    peerDependenciesMeta:
+      '@libsql/client':
+        optional: true
+      better-sqlite3:
+        optional: true
 
   '@node-rs/argon2-android-arm-eabi@1.7.0':
     resolution: {integrity: sha512-udDqkr5P9E+wYX1SZwAVPdyfYvaF4ry9Tm+R9LkfSHbzWH0uhU6zjIwNRp7m+n4gx691rk+lqqDAIP8RLKwbhg==}
@@ -2096,6 +2111,12 @@ snapshots:
   '@lucia-auth/adapter-drizzle@1.0.7(lucia@3.2.0)':
     dependencies:
       lucia: 3.2.0
+
+  '@lucia-auth/adapter-sqlite@3.0.1(better-sqlite3@9.6.0)(lucia@3.2.0)':
+    dependencies:
+      lucia: 3.2.0
+    optionalDependencies:
+      better-sqlite3: 9.6.0
 
   '@node-rs/argon2-android-arm-eabi@1.7.0':
     optional: true
