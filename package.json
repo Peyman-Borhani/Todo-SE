@@ -16,7 +16,7 @@
 		"@sveltejs/vite-plugin-svelte": "^3.1.0",
 		"@types/better-sqlite3": "^7.6.10",
 		"@types/eslint": "^8.56.10",
-		"drizzle-kit": "^0.20.17",
+		"drizzle-kit": "^0.20.18",
 		"eslint": "^8.57.0",
 		"eslint-plugin-svelte": "^2.38.0",
 		"lucia": "^3.2.0",
