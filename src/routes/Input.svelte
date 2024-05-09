@@ -115,11 +115,12 @@ const insert = i=> log('insert:', i)
 <svelte:window	onkeydown ={kb_Control} />
 
 <section>
-        <input    id = 'typin'   maxlength = 38   bind:this={inp_el}
-                  placeholder = {'❯❯  Enter a new item... '}
-                  onfocus    = {e=> e.target.setAttribute('placeholder', '') }
-                  onblur     = {e=> e.target.setAttribute('placeholder', '❯❯  Enter a new item... ') }
-                  onkeydown  = {add_Item}
+        <input   id = 'Typin'       bind:this={inp_el}  
+                maxlength   = 38    autocomplete= 'off'  
+                placeholder = {'❯❯  Enter a new item... '}
+                onfocus     = {e=> e.target.setAttribute('placeholder', '') }
+                onblur      = {e=> e.target.setAttribute('placeholder', '❯❯  Enter a new item... ') }
+                onkeydown   = {add_Item}
               >
 
         <button   onpointerdown={add_Item}>   ↩
@@ -128,21 +129,20 @@ const insert = i=> log('insert:', i)
         <time   class:timer ={true}    transition:fade
                 onclick     ={()=> ISO=!ISO}>   {time}    
         </time>
-
 </section>
 
 
 <style>
 
-  section  { 
-            bottom  : -2pt;            display      : grid;         
+section  {     /* Section Scope Start */
+            bottom  : -2pt;         display      : grid;         
             left    : 0;            position     : absolute;          
             border  : solid 3pt;    border-radius: 0 2.4vmin 0 1pt;   
             width   : 98dvi;        grid-template: auto / 70% 24% 18%;
             height  : auto;         box-shadow   : inset 0 0 1ch #000;       
             align-self: end;        background-color: #dec;
             font-family:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+
 
   button  {                         line-height : 0;
             font-size: 6ch;         font-weight : 1000;
@@ -175,25 +175,29 @@ const insert = i=> log('insert:', i)
             border  : none;         text-shadow: 0 0 1pt #000;
             color   : #123;       background-color: #0008;
 }
+.timer {color:#000}
 
-.timer {color:#000;     }
+} /* Section Scope End  */
 
 @media  screen and (orientation: portrait)
-{
-    section { height: 8dvh;     position: fixed;
-              width : 96dvw;   bottom  : 0;
-              grid-template: auto / 60% 24% 11%  ;
-             font-size: var(--size); 
-    }
+{   /* Section (portrait) Scope Start */
+  section {     
+            height: 8dvh;   position: fixed;
+            width : 96dvw;  font-size: var(--size);    
+            bottom: 0;      grid-template: auto / 60% 24% 11%;
+            
+    
     input[id="typin"]   {grid-column: 1;  text-overflow: ellipsis; align-self: center;}
-    button{height: 94%} 
-    time  { position      : relative;
-            font-size: 1.5ch !important; 
-            line-height   : 3.6ch;
+    button{height: 94%}
+    
+    time  { 
+            position    : relative;
+            font-size   : 1.5ch !important; 
+            line-height : 3.6ch;
+            place-self  : center;
+            height      : 100%;
             letter-spacing: .5pt;
-            place-self: center;
-            height: 100%;
     }
+  } /* Section (portrait) Scope End */
 }
-
 </style>
