@@ -1,0 +1,6 @@
+{
+    "svelte.plugin.svelte.format.config.singleQuote": true,
+    "json.schemaDownload.enable": true,
+    "compile-hero.disable-compile-files-on-did-save-code": true,
+    "compile-hero.x-compile-files-on-save": false
+}
