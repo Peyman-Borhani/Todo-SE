@@ -1,5 +1,23 @@
 import  {Map}  from  'svelte/reactivity';
-export  {make_Store}
+export  {make_Store,  output}
+
+import  {drizzle}   from "drizzle-orm/better-sqlite3";
+import  {migrate}   from "drizzle-orm/better-sqlite3/migrator";
+import  Database    from 'better-sqlite3';
+
+const sqlite =  new Database(':memory:');//('./src/lib/srv/db/todo-se.db');
+const db    =  drizzle(sqlite);
+const insert=  db.prepare('INSERT INTO users (id, name) VALUES (@id, @name)');
+
+const output = ()=> {migrate(db,{migrationsFolder: './src/lib/srv/db/out'});  sqlite.close() }
+
+
+const   insertMany = db.transaction( (users)=> {
+        for (const usr of users)  insert.run(usr) });
+
+insertMany( [{id: 1, name: 'Joey'}, 
+             {id: 2, name: 'Sally'},
+             {id: 3, name: 'Junior'}] );
 
 
 let qN= 1;  // que number
