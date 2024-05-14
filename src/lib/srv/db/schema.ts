@@ -16,7 +16,7 @@ export const usersTable = sqliteTable(
 	createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`)
   },  
   (users)=> ({uid: uniqueIndex('uid').on(users.name)})
-);
+); // (arrow return statement) 
 
 export const  usersSessionsTable = sqliteTable(
   'users_sessions', 
