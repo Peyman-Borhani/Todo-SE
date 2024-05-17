@@ -1,6 +1,6 @@
 import  {Map}  from  'svelte/reactivity';
 export  {make_Store,  output}
-
+// non auth Database
 import  {drizzle}   from "drizzle-orm/better-sqlite3";
 import  {migrate}   from "drizzle-orm/better-sqlite3/migrator";
 import  Database    from 'better-sqlite3';
@@ -10,7 +10,6 @@ const db    =  drizzle(sqlite);
 const insert=  db.prepare('INSERT INTO users (id, name) VALUES (@id, @name)');
 
 const output = ()=> {migrate(db,{migrationsFolder: './src/lib/srv/db/out'});  sqlite.close() }
-
 
 const   insertMany = db.transaction( (users)=> {
         for (const usr of users)  insert.run(usr) });
