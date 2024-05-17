@@ -5,6 +5,7 @@ export default defineConfig({
   schema:   './src/lib/srv/db/schema.ts',
   out:      './src/lib/srv/db/out',
   dialect:  'sqlite',
+  //driver: 'turso',
   dbCredentials: {url: './src/lib/srv/db/todo-se.db'}, //'localDB/sql.db' },
     //connectionString: process.env.DB_URL,
   verbose: true,
