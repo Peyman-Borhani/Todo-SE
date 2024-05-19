@@ -2,30 +2,30 @@ import  {sql}   from 'drizzle-orm';
 import  {integer,  sqliteTable,  
          text,     uniqueIndex}  from   'drizzle-orm/sqlite-core';
 
-export const usersTable = sqliteTable(
-  'users', 
+export const userT = sqliteTable(  'user', 
   {
 	id: text('id').primaryKey().notNull(),
+
+    password: text('password').notNull(),
 
 	name: text('name').notNull(),
 
 	email: text('email').notNull().unique(),
-
-	password: text('password').notNull(),
+    
+    accessAt: text('access_at').default(sql`CURRENT_TIMESTAMP`),
 
 	createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`)
   },  
-  (users)=> ({uid: uniqueIndex('uid').on(users.name)})
+  (user)=> ({uid: uniqueIndex('uid').on(user.name)})
 ); // (arrow return statement) 
 
-export const  usersSessionsTable = sqliteTable(
-  'users_sessions', 
+export const  sessionT = sqliteTable(  'session', 
   {
     id: text('id').primaryKey().notNull(),
 
-    userId: text('user_id').notNull().references(()=> usersTable.id),
+    userId: text('user_id').notNull().references(()=> userT.id),
     
     expiresAt: integer('expires_at').notNull()
 });
 
-export type UserInsertSchema = typeof usersTable.$inferInsert;
+export type UserInsertSchema = typeof userT.$inferInsert;
