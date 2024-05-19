@@ -12,7 +12,7 @@ const db = drizzle(sqliteDB);
 
 const userT = sqliteTable(  'user', 
 {
-    id:   text('id').notNull().primaryKey(),
+    id:     text('id').notNull().primaryKey(),
     password: text('password').notNull(),
     accessAt: text('access_at').notNull().default(sql`CURRENT_TIMESTAMP`)
 });
