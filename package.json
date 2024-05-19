@@ -1,6 +1,6 @@
 {
 	"name": "Todo-SE",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
@@ -12,7 +12,7 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.2.0",
-		"@sveltejs/kit": "^2.5.8",
+		"@sveltejs/kit": "^2.5.9",
 		"@sveltejs/vite-plugin-svelte": "^3.1.0",
 		"@types/better-sqlite3": "^7.6.10",
 		"@types/eslint": "^8.56.10",
@@ -20,8 +20,8 @@
 		"eslint": "^8.57.0",
 		"eslint-plugin-svelte": "^2.39.0",
 		"lucia": "^3.2.0",
-		"rxdb": "^15.20.0",
-		"svelte": "^5.0.0-next.136",
+		"rxdb": "^15.21.0",
+		"svelte": "5.0.0-next.136",
 		"vite": "^5.2.11"
 	},
 	"type": "module",
