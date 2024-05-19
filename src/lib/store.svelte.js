@@ -7,8 +7,10 @@ import  Database    from 'better-sqlite3';
 
 const sqlite =  new Database(':memory:');//('./src/lib/srv/db/todo-se.db');
 const db    =  drizzle(sqlite);
-const insert=  db.prepare('INSERT INTO users (id, name) VALUES (@id, @name)');
 
+//const getAll= db.select().from(users).all();
+const insert=  db.prepare('INSERT INTO users (id, name) VALUES (@id, @name)');
+               //db.insert(users).values(user).run();
 const output = ()=> {migrate(db,{migrationsFolder: './src/lib/srv/db/out'});  sqlite.close() }
 
 const   insertMany = db.transaction( (users)=> {
@@ -17,6 +19,7 @@ const   insertMany = db.transaction( (users)=> {
 insertMany( [{id: 1, name: 'Joey'}, 
              {id: 2, name: 'Sally'},
              {id: 3, name: 'Junior'}] );
+
 
 
 let qN= 1;  // que number
