@@ -1,25 +1,33 @@
-import  {Map}  from  'svelte/reactivity';
 export  {make_Store,  output}
-// non auth Database
-import  {drizzle}   from "drizzle-orm/better-sqlite3";
-import  {migrate}   from "drizzle-orm/better-sqlite3/migrator";
+import  {Map}  from  'svelte/reactivity';
+
+// non auth Database      //import  {sql}       from    'drizzle-orm';
+//import {BetterSqlite3Adapter}  from '@lucia-auth/adapter-sqlite';
+import  {DrizzleSQLiteAdapter}  from  '@lucia-auth/adapter-drizzle';
+import  {userT, sessionT}   from './srv/db/schema.ts'
+import  {drizzle}   from 'drizzle-orm/better-sqlite3';
+import  {migrate}   from 'drizzle-orm/better-sqlite3/migrator';
 import  Database    from 'better-sqlite3';
 
-const sqlite =  new Database(':memory:');//('./src/lib/srv/db/todo-se.db');
-const db    =  drizzle(sqlite);
+const  sqlite   =new Database(':memory:');//('./src/lib/srv/db/todo-se.db');
+const  db       =drizzle(sqlite);
+const  adapter  =new DrizzleSQLiteAdapter(db, sessionT, userT);
 
-//const getAll= db.select().from(users).all();
-const insert=  db.prepare('INSERT INTO users (id, name) VALUES (@id, @name)');
+
+const  getAll  =db.select().from(userT).all();
+
+const  insert  =db.prepare('INSERT INTO userT (id, name) VALUES (@id, @name)');
                //db.insert(users).values(user).run();
-const output = ()=> {migrate(db,{migrationsFolder: './src/lib/srv/db/out'});  sqlite.close() }
+const  output = ()=> {migrate(db,{migrationsFolder: './src/lib/srv/db/out'});  sqlite.close() }
 
-const   insertMany = db.transaction( (users)=> {
-        for (const usr of users)  insert.run(usr) });
+const   insertMany  =db.transaction( (users)=> {
+                    for (const usr of users)  insert.run(usr) });
 
 insertMany( [{id: 1, name: 'Joey'}, 
              {id: 2, name: 'Sally'},
              {id: 3, name: 'Junior'}] );
 
+setTimeout(()=>{console.log(getAll)}, 3000);
 
 
 let qN= 1;  // que number
