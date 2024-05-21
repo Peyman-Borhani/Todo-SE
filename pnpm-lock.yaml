@@ -49,8 +49,8 @@ importers:
         specifier: ^3.2.0
         version: 3.2.0
       rxdb:
-        specifier: ^15.21.0
-        version: 15.21.0(rxjs@7.8.1)
+        specifier: 15.21.3
+        version: 15.21.3(rxjs@7.8.1)
       svelte:
         specifier: 5.0.0-next.136
         version: 5.0.0-next.136
@@ -2194,8 +2194,8 @@ packages:
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
 
-  rxdb@15.21.0:
-    resolution: {integrity: sha512-7hstjOxNcdXJDQYJbY/lbJTu+cEaHaDjhXlIfWIbFBPUzmWahyN/olq1xyztimODNYe4DRzy8zY0kwggF4vDBQ==}
+  rxdb@15.21.3:
+    resolution: {integrity: sha512-VkyarPAaw+6N0RvbuB7PT3OpaHzcO0hNvZaC28iRqTPZNfSqv+eqrYP4rUeekq8TivJ1pfyzNdHRQ6SAQktfNg==}
     engines: {node: '>=18'}
     peerDependencies:
       rxjs: ^7.8.0
@@ -4547,7 +4547,7 @@ snapshots:
     dependencies:
       queue-microtask: 1.2.3
 
-  rxdb@15.21.0(rxjs@7.8.1):
+  rxdb@15.21.3(rxjs@7.8.1):
     dependencies:
       '@babel/runtime': 7.24.5
       '@types/clone': 2.1.4
