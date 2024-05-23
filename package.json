@@ -11,24 +11,25 @@
 		"db:studio": "drizzle-kit studio"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^3.2.0",
-		"@sveltejs/kit": "^2.5.9",
+		"@sveltejs/adapter-auto": "^3.2.1",
+		"@sveltejs/kit": "^2.5.10",
 		"@sveltejs/vite-plugin-svelte": "^3.1.0",
 		"@types/better-sqlite3": "^7.6.10",
 		"@types/eslint": "^8.56.10",
-		"drizzle-kit": "^0.21.2",
+		"drizzle-kit": "^0.21.4",
 		"eslint": "^8.57.0",
 		"eslint-plugin-svelte": "^2.39.0",
 		"lucia": "^3.2.0",
 		"rxdb": "15.21.3",
-		"svelte": "5.0.0-next.136",
+		"svelte": "5.0.0-next.138",
 		"vite": "^5.2.11"
 	},
 	"type": "module",
 	"dependencies": {
 		"@lucia-auth/adapter-drizzle": "^1.0.7",
 		"@lucia-auth/adapter-sqlite": "^3.0.1",
-		"better-sqlite3": "^9.6.0",
+		"better-sqlite3": "^10.0.0",
 		"drizzle-orm": "^0.30.10"
-	}
+	},
+	"packageManager": "pnpm@9.1.2+sha512.127dc83b9ea10c32be65d22a8efb4a65fb952e8fefbdfded39bdc3c97efc32d31b48b00420df2c1187ace28c921c902f0cb5a134a4d032b8b5295cbfa2c681e2"
 }
