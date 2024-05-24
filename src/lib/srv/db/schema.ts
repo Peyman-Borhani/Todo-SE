@@ -5,10 +5,10 @@ import  {sql}   from 'drizzle-orm';
 import  {integer,  sqliteTable,  
          text,     uniqueIndex}  from   'drizzle-orm/sqlite-core';
 
-const  userT  =sqliteTable( 'user', 
+const  userT  =sqliteTable(  'user', 
   {
 	id: text('id').primaryKey().notNull(),
-    password: text('password').notNull(),
+//    password: text('password').notNull(),
 	name: text('name').notNull(),
 	email: text('email').notNull().unique(),
     accessAt: text('access_at').default(sql`CURRENT_TIMESTAMP`),
@@ -17,7 +17,7 @@ const  userT  =sqliteTable( 'user',
   (user)=> ({uid: uniqueIndex('uid').on(user.name)})
 ); // (arrow return statement) 
 
-const  sessionT  =sqliteTable( 'session', 
+const  sessionT  =sqliteTable(  'session', 
   {
     id: text('id').primaryKey().notNull(),
     userId: text('user_id').notNull().references(()=> userT.id),
