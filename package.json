@@ -8,7 +8,8 @@
 		"preview": "vite preview",
 		"lint": "eslint .",
 		"db:gen": "drizzle-kit generate",
-		"db:studio": "drizzle-kit studio"
+		"db:studio": "drizzle-kit studio",
+        "db:migrate": "drizzle-kit migrate"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.2.1",
@@ -26,6 +27,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@libsql/client": "^0.6.0",
 		"@lucia-auth/adapter-drizzle": "^1.0.7",
 		"@lucia-auth/adapter-sqlite": "^3.0.1",
 		"better-sqlite3": "^10.0.0",
