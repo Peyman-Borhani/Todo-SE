@@ -4,6 +4,7 @@ node_modules
 /.svelte-kit
 /package
 /src/routes/BAK
+.go-tetris.log
 *.tmp
 *.bak
 *.BAK
