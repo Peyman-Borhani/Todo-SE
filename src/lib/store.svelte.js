@@ -1,34 +1,39 @@
-export  {make_Store,  output}
+//export  {make_Store,  output}
 import  {Map}  from  'svelte/reactivity';
 
 // non auth Database      //import  {sql}       from    'drizzle-orm';
-//import {BetterSqlite3Adapter}  from '@lucia-auth/adapter-sqlite';
-import  {DrizzleSQLiteAdapter}  from  '@lucia-auth/adapter-drizzle';
-import  {userT, sessionT}   from './srv/db/schema.ts'
-import  {drizzle}   from 'drizzle-orm/better-sqlite3';
-import  {migrate}   from 'drizzle-orm/better-sqlite3/migrator';
-import  Database    from 'better-sqlite3';
+import  {drizzle}   from 'drizzle-orm/libsql'; //BSQL3// 'drizzle-orm/better-sqlite3';
+import  {migrate}   from 'drizzle-orm/libsql/migrator'; //BSQL3// 'drizzle-orm/better-sqlite3/migrator';
+import  Database    from 'libsql'; //BSQL3// 'better-sqlite3';
+import { createClient } from "@libsql/client";
+
+const client = createClient({url: "http://127.0.0.1:8080"});//file: './src/lib/srv/db/todo-se.db'
+//console.log(client);
 
 const  sqlite   =new Database(':memory:');//('./src/lib/srv/db/todo-se.db');
 const  db       =drizzle(sqlite);
-const  adapter  =new DrizzleSQLiteAdapter(db, sessionT, userT);
-
-
-const  getAll  =db.select().from(userT).all();
-
-const  insert  =db.prepare('INSERT INTO userT (id, name) VALUES (@id, @name)');
+//console.log(db)
+//libSQL //db.exec("CREATE TABLE users (@userT)");
+//libSQL //db.exec("INSERT INTO userT (id, name, email) VALUES (1, 'Alice', 'alice@example.org')");
+//const row = db.prepare("SELECT * FROM @userT WHERE id = ?").get(1);
+/*
+//BSQL3// const  insert  =db.prepare('INSERT INTO userT (id, name, email) VALUES (@id, @name, @email)');
                //db.insert(users).values(user).run();
-const  output = ()=> {migrate(db,{migrationsFolder: './src/lib/srv/db/out'});  sqlite.close() }
+
+//console.log(`Name: ${row.name}, email: ${row.email}`);
+
+//BSQL3// const  getAll  =db.select().from(user).all().get().values().run();
+
+const  output = ()=> {migrate(db, {migrationsFolder: './src/lib/srv/db/out'});  sqlite.close() }
 
 const   insertMany  =db.transaction( (users)=> {
-                    for (const usr of users)  insert.run(usr) });
+                    for (const usr of users)  db.insert.run(usr) });
 
-insertMany( [{id: 1, name: 'Joey'}, 
-             {id: 2, name: 'Sally'},
-             {id: 3, name: 'Junior'}] );
-
-setTimeout(()=>{console.log(getAll)}, 3000);
-
+insertMany( [{id: 1, name: 'Arma'}, 
+             {id: 2, name: 'Ben'},
+             {id: 3, name: 'Cita'}] );
+output()
+//BSQL3// setTimeout(()=>{console.log(getAll)}, 3000);
 
 let qN= 1;  // que number
 
