@@ -1,5 +1,8 @@
-# create-svelte
+# About
 
+This project is composed of personal project tools and organizer components and is in experimental phase. I also use it as a playground for new FW, tools, DB, code prototyping. Will only be useful once there is an official release.
+
+# create-svelte
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
 
 ## Creating a project
