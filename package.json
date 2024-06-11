@@ -1,5 +1,5 @@
 {
-	"name": "Todo-SE",
+	"name": "todo-se",
 	"version": "0.0.2",
 	"private": true,
 	"scripts": {
@@ -19,11 +19,11 @@
 		"@types/eslint": "^8.56.10",
 		"drizzle-kit": "^0.21.4",
 		"eslint": "^8.57.0",
-		"eslint-plugin-svelte": "^2.39.0",
+		"eslint-plugin-svelte": "^2.39.3",
 		"lucia": "^3.2.0",
 		"rxdb": "15.21.3",
-		"svelte": "5.0.0-next.150",
-		"vite": "^5.2.12"
+		"svelte": "5.0.0-next.153",
+		"vite": "^5.2.13"
 	},
 	"type": "module",
 	"dependencies": {
