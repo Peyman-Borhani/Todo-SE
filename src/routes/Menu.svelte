@@ -1,12 +1,18 @@
 
 <script>    
     import {scale, fly, fade}   from    'svelte/transition'
-
+/*
     export  let     menu = false,
                     info   = false,
                     zoom   = false,
                     view   = false;
+*/
 
+// App/Menu props
+let    {menu  =$bindable(false),  info =$bindable(false),
+        zoom  =$bindable(false),  view =$bindable(false)
+    } = $props();
+   
     let  inf;
     let  wait = false;
     let  vu   = '☰';  // ╋ ✚ ❚ ≣ ⚌ ░ 💾 📤 📥 🗺 🛠 🛒
