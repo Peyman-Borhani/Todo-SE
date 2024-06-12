@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1714837632334,
+      "tag": "0000_steady_colleen_wing",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1716555070356,
+      "tag": "0001_past_nova",
+      "breakpoints": true
+    }
+  ]
+}
