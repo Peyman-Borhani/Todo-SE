@@ -1,19 +1,27 @@
 <script>
-  import    {send, receive} from    './animate.js'
-  import    { flip }        from    'svelte/animate';
-  import    Input           from    './Input.svelte';
-  import    Menu            from    './Menu.svelte' ;	
-  import    {make_Store}    from    '$lib/store.svelte.js';
-  //import    {Map}           from    'svelte/reactivity';
-  
+import    {send, receive} from    './animate.js'
+import    { flip }        from    'svelte/animate';
+import    Input           from    './Input.svelte';
+import    Menu            from    './Menu.svelte' ;	
+import    Database        from    'libsql';
+import    {make_Store}    from    '$lib/store.svelte.js';
+//import    {Map}           from    'svelte/reactivity';
+//import    {createClient}  from "@libsql/client";
+
+const  db   =new Database('127.0.0.1:8080'); //':memory:');//('./src/lib/srv/db/todo-se.db');
+
+//const client = createClient({url: '127.0.0.1:8080'});
+let qry = db.prepare('SELECT 1000;').get(1);
+setTimeout(()=>console.log('_Query Result_:', qry), 2000) 
+
   //let Data = $state(new Map());
-  let Store  = $state( make_Store());
+  //let Store  = $state( make_Store());
   // Input props
-  let   L = true,   menu=false,  info=false, 
+  let   menu=false,  info=false, L = true,
         zoom=false, view=false; 
         // L: left/todo //qN = 1, task_name; ⚙️ ✘
-$effect(Store.init());
-//setTimeout(Store.
+//$effect(Store.init());
+
 </script>
 
 
@@ -60,7 +68,7 @@ $effect(Store.init());
     <Input  bind:L bind:menu bind:info bind:zoom  bind:view/>
 </main>
 
-<Menu  />
+<Menu  bind:menu bind:info bind:zoom  bind:view/>
 
 
 <style>  
@@ -110,7 +118,7 @@ label.dn_itm {
 }
 label.td_itm {grid-column: 1}
 
-label.dn_itm {  	        grid-column:  2;         		   	   
+label.dn_itm {  	            grid-column:  2;         		   	   
         	  		            box-shadow: 0 0 0.7ch #49a;
         text-indent: -3ch;		border	  : 1px solid #000;
         color      : #faa;    background-color: hsla(211, 71%, 8%, .4);
