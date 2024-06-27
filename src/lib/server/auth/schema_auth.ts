@@ -1,5 +1,6 @@
 export  {userT,  sessionT}
-export type  UserInsertSchema  =typeof userT.$inferInsert;
+export type  UserInserType  =typeof userT.$inferInsert;
+export type  UserSelecType  =typeof userT.$inferSelect // return type when queried
 
 import  {sql}   from 'drizzle-orm';
 import  {integer,  sqliteTable,  
