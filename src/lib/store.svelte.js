@@ -1,18 +1,25 @@
 //export  {make_Store,  output}
-import  {Map}  from  'svelte/reactivity';
+//import  {Map}  from  'svelte/reactivity';
 
-// non auth Database      //import  {sql}       from    'drizzle-orm';
+// non auth Database
+//import  {sql}       from    'drizzle-orm';
+import  {userT, sessionT}     from './schema_DB.ts';
 import  {drizzle}   from 'drizzle-orm/libsql'; //BSQL3// 'drizzle-orm/better-sqlite3';
 import  {migrate}   from 'drizzle-orm/libsql/migrator'; //BSQL3// 'drizzle-orm/better-sqlite3/migrator';
 import  Database    from 'libsql'; //BSQL3// 'better-sqlite3';
-import { createClient } from "@libsql/client";
+import  {createClient} from "@libsql/client";
 
-const client = createClient({url: "http://127.0.0.1:8080"});//file: './src/lib/srv/db/todo-se.db'
-//console.log(client);
+const url  ='http://127.0.0.1:8080'; //'http://0.0.0.0:8080'
+const opts ={syncUrl: url}         //,AuthToken: optional
 
-const  sqlite   =new Database(':memory:');//('./src/lib/srv/db/todo-se.db');
-const  db       =drizzle(sqlite);
-//console.log(db)
+//const client = createClient({url: 'http://127.0.0.1:8080'});//file: './src/lib/srv/db/todo-se.db'
+
+const  DB_path  ='./src/lib/server/db/todo.db' //':memory:'
+const  db    =new Database(DB_path ,opts);//sqlite
+//const  db       =drizzle(sqlite);
+const cl = createClient({url:url, opts})
+console.log(cl,'____', db.exec('SELECT *'))
+
 //libSQL //db.exec("CREATE TABLE users (@userT)");
 //libSQL //db.exec("INSERT INTO userT (id, name, email) VALUES (1, 'Alice', 'alice@example.org')");
 //const row = db.prepare("SELECT * FROM @userT WHERE id = ?").get(1);
