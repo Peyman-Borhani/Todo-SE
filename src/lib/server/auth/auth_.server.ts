@@ -1,6 +1,6 @@
 // lucia auth libSQL client
 import  {dev}   from  '$app/environment';
-import  {DB}    from  './DB_.server.ts';
+import  {DB}    from  '../DB_.server.ts';
 //import  {createClient}  from  '@libsql/client';
 import  {Lucia}         from  'lucia';
 import  {userT, sessionT}     from './schema_auth.ts';

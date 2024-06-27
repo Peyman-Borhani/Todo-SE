@@ -4,9 +4,11 @@ import type  {Cookies}  from  '@sveltejs/kit';
 import type  {Lucia}    from  'lucia';
 
 
-const  set_Session  =async ( lucia  : Lucia,  
-                             userId : string, 
-                             cookies: Cookies
+const  set_Session  =
+
+    async ( lucia  : Lucia,  
+            userId : string, 
+            cookies: Cookies
     )=>{
         const  session  =await lucia.createSession(userId, {});
         const  set_S_Cookie =lucia.createSessionCookie(session.id);
@@ -18,8 +20,10 @@ const  set_Session  =async ( lucia  : Lucia,
 };
 
 
-const  del_Session  =async( lucia: Lucia, 
-                            cookies: Cookies
+const  del_Session  =
+
+    async(  lucia: Lucia, 
+            cookies: Cookies
     )=>{
 	    const  del_S_Cookie  =lucia.createBlankSessionCookie();
 
