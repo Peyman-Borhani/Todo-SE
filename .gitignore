@@ -5,6 +5,8 @@ node_modules
 /package
 /src/routes/BAK
 .go-tetris.log
+*.tmp.js
+*.tmp.json
 *.tmp
 *.bak
 *.BAK
