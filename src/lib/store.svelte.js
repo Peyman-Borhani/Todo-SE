@@ -3,7 +3,7 @@
 
 // non auth Database
 //import  {sql}       from    'drizzle-orm';
-import  {userT, sessionT}     from './schema_DB.ts';
+import  {userT, sessionT}     from './server/db/schema_DB.ts';
 import  {drizzle}   from 'drizzle-orm/libsql'; //BSQL3// 'drizzle-orm/better-sqlite3';
 import  {migrate}   from 'drizzle-orm/libsql/migrator'; //BSQL3// 'drizzle-orm/better-sqlite3/migrator';
 import  Database    from 'libsql'; //BSQL3// 'better-sqlite3';
@@ -12,13 +12,14 @@ import  {createClient} from "@libsql/client";
 const url  ='http://127.0.0.1:8080'; //'http://0.0.0.0:8080'
 const opts ={syncUrl: url}         //,AuthToken: optional
 
-//const client = createClient({url: 'http://127.0.0.1:8080'});//file: './src/lib/srv/db/todo-se.db'
-
 const  DB_path  ='./src/lib/server/db/todo.db' //':memory:'
-const  db    =new Database(DB_path ,opts);//sqlite
-//const  db       =drizzle(sqlite);
-const cl = createClient({url:url, opts})
-console.log(cl,'____', db.exec('SELECT *'))
+const  client   =createClient({url: url});
+const  db       =new  Database(DB_path,  opts);//sqlite
+
+const  d_DB  = drizzle(client);
+
+console.log('db___', d_DB,'cl____', client)
+d_DB.exec('SELECT *');
 
 //libSQL //db.exec("CREATE TABLE users (@userT)");
 //libSQL //db.exec("INSERT INTO userT (id, name, email) VALUES (1, 'Alice', 'alice@example.org')");
