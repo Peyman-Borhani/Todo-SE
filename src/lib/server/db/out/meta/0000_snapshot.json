@@ -1,9 +1,11 @@
 {
   "version": "6",
   "dialect": "sqlite",
+  "id": "fea1448a-8bfb-470b-85df-de0df2083603",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "users_sessions": {
-      "name": "users_sessions",
+    "session": {
+      "name": "session",
       "columns": {
         "id": {
           "name": "id",
@@ -29,25 +31,25 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "users_sessions_user_id_users_id_fk": {
-          "name": "users_sessions_user_id_users_id_fk",
-          "tableFrom": "users_sessions",
+        "session_user_id_user_id_fk": {
+          "name": "session_user_id_user_id_fk",
+          "tableFrom": "session",
+          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "users": {
-      "name": "users",
+    "user": {
+      "name": "user",
       "columns": {
         "id": {
           "name": "id",
@@ -70,12 +72,13 @@
           "notNull": true,
           "autoincrement": false
         },
-        "password": {
-          "name": "password",
+        "access_at": {
+          "name": "access_at",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": false,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
         },
         "created_at": {
           "name": "created_at",
@@ -87,8 +90,8 @@
         }
       },
       "indexes": {
-        "users_email_unique": {
-          "name": "users_email_unique",
+        "user_email_unique": {
+          "name": "user_email_unique",
           "columns": [
             "email"
           ],
@@ -109,9 +112,11 @@
   },
   "enums": {},
   "_meta": {
+    "schemas": {},
     "tables": {},
     "columns": {}
   },
-  "id": "88b27700-2d4c-413f-af19-973c42f54bff",
-  "prevId": "00000000-0000-0000-0000-000000000000"
+  "internal": {
+    "indexes": {}
+  }
 }

@@ -1,6 +1,6 @@
 import  {defineConfig}  from  'drizzle-kit';
 //import  {env}      from    '$env/static/private';
-const env = {DB_URL: '0.0.0.0:8080',  DB_Token: 'a_B-c_D'}
+const env = {DB_URL: 'https://127.0.0.1:8080',  DB_Token: 'a_B-c_D'}
 
 export default defineConfig({
   schema:   './src/lib/server/db/schema_DB.ts',
