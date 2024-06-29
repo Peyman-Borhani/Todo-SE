@@ -8,17 +8,13 @@ import    {make_Store}    from    '$lib/store.svelte.js';
 //import    {Map}           from    'svelte/reactivity';
 //import    {createClient}  from "@libsql/client";
 
-const  db   =new Database('127.0.0.1:8080'); //':memory:');//('./src/lib/srv/db/todo-se.db');
-
-//const client = createClient({url: '127.0.0.1:8080'});
-let qry = db.prepare('SELECT 1000;').get(1);
-setTimeout(()=>console.log('_Query Result_:', qry), 2000) 
 
   //let Data = $state(new Map());
   //let Store  = $state( make_Store());
   // Input props
   let   menu=false,  info=false, L = true,
         zoom=false, view=false; 
+        console.log('menu : ', menu)
         // L: left/todo //qN = 1, task_name; ⚙️ ✘
 //$effect(Store.init());
 
