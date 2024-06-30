@@ -1,18 +1,16 @@
-// Full auth single file
-// BSQL3 temporarily
-import {DrizzleSQLiteAdapter}  from  '@lucia-auth/adapter-drizzle';
+// single file Auth DB on server
 
-import  {drizzle}       from    'drizzle-orm/better-sqlite3';
+import  {DrizzleSQLiteAdapter}  from  '@lucia-auth/adapter-drizzle';
+import  {createClient}  from    '@libsql/client';
+import  {drizzle}       from    'drizzle-orm/libsql';
 import  {sql}           from    'drizzle-orm';
 import  {sqliteTable, text, 
          uniqueIndex, integer}  from  'drizzle-orm/sqlite-core';
 
-import  Database    from  'better-sqlite3';
+//import  Database    from  'libsql';
+const  sql_DB =createClient({url: 'http://127.0.0.1:8080'}); // Database(':memory:');  //file: './src/lib/srv/db/todo-se.db'
 
-import {dev}        from  '$app/environment';
-
-const  sql_DB = Database(':memory:');
-const  DB       = drizzle(sql_DB);
+const  DB     = drizzle(sql_DB);
 
 const  userT  =sqliteTable( 'user', 
 {

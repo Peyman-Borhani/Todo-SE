@@ -1,4 +1,4 @@
-// lucia auth libSQL client
+// main auth libSQL client - lucia + drizzle 
 import  {dev}   from  '$app/environment';
 import  {DB}    from  '../DB_.server.ts';
 //import  {createClient}  from  '@libsql/client';
@@ -7,7 +7,6 @@ import  {userT, sessionT}     from './schema_auth.ts';
 import  {DrizzleSQLiteAdapter}from '@lucia-auth/adapter-drizzle';
 
 //const  sqlite =createClient({url: "http://127.0.0.1:8080"});//(':memory:'); //file: './src/lib/srv/db/todo-se.db'
-//console.log(sqlite);
 const  adapter  =new DrizzleSQLiteAdapter(DB, sessionT, userT);
 
 export const  lucia  =new Lucia(adapter, 

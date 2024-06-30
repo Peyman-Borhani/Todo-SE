@@ -15,7 +15,7 @@ const  set_Session  =
 
 	    cookies.set( set_S_Cookie.name,
                      set_S_Cookie.value,
-                    {path: '.',...set_S_Cookie.attributes}
+                    {path: '.', ...set_S_Cookie.attributes}
 	    );
 };
 
@@ -29,6 +29,6 @@ const  del_Session  =
 
 	    cookies.set(del_S_Cookie.name,
                     del_S_Cookie.value,
-                    {path: '.',...del_S_Cookie.attributes}
+                    {path: '.', ...del_S_Cookie.attributes}
         );
 };

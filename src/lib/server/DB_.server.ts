@@ -1,3 +1,4 @@
+// reusable libSQL DB starter
 export {DB}
 //import Database from 'better-sqlite3';
 import  {drizzle}   from 'drizzle-orm/libsql'; //BSQL3: 'better-sqlite3';
