@@ -11,6 +11,7 @@ node_modules
 *.bak
 *.BAK
 BAK.*
+data.sqld
 .env
 .env.*
 !.env.example
