@@ -1,6 +1,14 @@
 import  {defineConfig}  from  'drizzle-kit';
 //import  {env}      from    '$env/static/private';
-const env = {DB_URL: 'https://127.0.0.1:8080',  DB_Token: 'a_B-c_D'}
+//import * as dotenv from 'dotenv';
+//import type { Config } from 'drizzle-kit';
+
+//dotenv.config();
+//const {DB_URL} =process.env;
+//if(!DB_URL) throw new Error(
+//    'DB_URL not defined. Check environment variable(.env file)');
+
+const env = {DB_URL: 'http://127.0.0.1:8080',  DB_Token: 'a_B-c_D'}
 
 export default defineConfig({
   schema:   './src/lib/server/db/schema_DB.ts',
