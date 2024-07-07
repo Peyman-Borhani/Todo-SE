@@ -28,7 +28,7 @@ const log = (n, x=false)=>  console.log(n, x? x :'');
 //________input handler (event/KeyBoard)_________
 function  kb_Control(evk) {
 //log(evk)//if user is typing or empty list return.
-if(evk.target.id==='typin' || evk.target.id==='task-name')  return; 
+if(evk.target.id==='Typin' || evk.target.id==='task-name')  return; 
   let   c=0,    // counter to check if any element left over
         k = evk.key,
         ctrl =(evk.ctrlKey || evk.metaKey) ? true  :false;
@@ -127,7 +127,7 @@ const insert = i=> log('insert:', i)
         </button>
         
         <time   class:timer ={true}    transition:fade
-                onclick     ={()=> ISO=!ISO}>   {time}    
+                onclick     ={()=> ISO=!ISO}>   {time}
         </time>
 </section>
 
@@ -157,7 +157,7 @@ section  {     /* Section Scope Start */
                                     
 }
 
-  input[id = "typin"]   {           
+  input[id = "Typin"]   {           
                                     text-align      : left;
             width   : 100%;         font-weight     : 500;
             height  : auto;         font-size       : 2.8vw;
@@ -187,7 +187,7 @@ section  {     /* Section Scope Start */
             bottom: 0;      grid-template: auto / 60% 24% 11%;
             
     
-    input[id="typin"]   {grid-column: 1;  text-overflow: ellipsis; align-self: center;}
+    input[id="Typin"]   {grid-column: 1;  text-overflow: ellipsis; align-self: center;}
     button{height: 94%}
     
     time  { 
