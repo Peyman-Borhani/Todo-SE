@@ -1,21 +1,22 @@
 <script>
-import    {send, receive} from    './animate.js'
+
+
+import    {To, From} from    './animate.js'
 import    { flip }        from    'svelte/animate';
 import    Input           from    './Input.svelte';
 import    Menu            from    './Menu.svelte' ;	
-import    Database        from    'libsql';
-import    {make_Store}    from    '$lib/store.svelte.js';
+//import    {make_Store}    from    '$lib/store.svelte.js';
 //import    {Map}           from    'svelte/reactivity';
-//import    {createClient}  from "@libsql/client";
-
 
   //let Data = $state(new Map());
   //let Store  = $state( make_Store());
   // Input props
   let   menu=false,  info=false, L = true,
         zoom=false, view=false; 
-        console.log('menu : ', menu)
-        // L: left/todo //qN = 1, task_name; ⚙️ ✘
+
+  let env = import.meta
+  console.log(env.DEV===true? '___Yesss_' :env)
+// L: left/todo //qN = 1, task_name; ⚙️ ✘
 //$effect(Store.init());
 
 </script>
@@ -38,14 +39,13 @@ import    {make_Store}    from    '$lib/store.svelte.js';
 
     {#each  Store.Data.entries() as [id, todo], i (id)}
         
-      <label   class ={todo.done? 'td_itm' :'dn_itm'}
-            class:hovr    = {i===focus+1}
-            animate:flip  = {{duration: 600}}
-            in:receive    = {{key: id }}
-            out:send      = {{key: id }}
-            oncontextmenu = {e=>alert(e.target)}
-            onpointerenter= {e=>e.currentTarget.classList.add('hovr')}
-            onpointerleave= {e=>e.currentTarget.classList.remove('hovr')}
+      <label  class ={todo.done? 'td_itm'  :'dn_itm'}
+              in:From ={{key: id}}   out:To ={{key: id}}
+              class:hovr   ={i===focus+1}
+              animate:flip ={{duration: 600}}
+            oncontextmenu  ={e=>alert(e.target)}
+            onpointerenter ={e=>e.currentTarget.classList.add('hovr')}
+            onpointerleave ={e=>e.currentTarget.classList.remove('hovr')}
         >
         <span>  {todo.get('done')?  '🗸' : `${i}.`}   
                 {todo.get('item')} 
