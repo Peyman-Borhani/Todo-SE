@@ -1,4 +1,4 @@
-//export  {make_Store,  output}
+export  {make_Store}        //, output}
 //import  {Map}  from  'svelte/reactivity';
 
 // non auth Database
@@ -8,22 +8,23 @@ import  {drizzle}   from 'drizzle-orm/libsql'; //BSQL3// 'drizzle-orm/better-sql
 import  {migrate}   from 'drizzle-orm/libsql/migrator'; //BSQL3// 'drizzle-orm/better-sqlite3/migrator';
 import  Database    from 'libsql'; //BSQL3// 'better-sqlite3';
 import  {createClient} from "@libsql/client";
+//import  {env}       from  '$env/static/private'
 
 const url  ='http://127.0.0.1:8080'; //'http://0.0.0.0:8080'
-const opts ={syncUrl: url}         //,AuthToken: optional
+const opts ={syncUrl: url, AuthToken: 'a_B-c_D'}
 
 const  DB_path  ='./src/lib/server/db/todo.db' //':memory:'
 const  client   =createClient({url: url});
-const  db       =new  Database(DB_path,  opts);//sqlite
+//const  db       =new  Database(DB_path,  opts);//sqlite
+const  db       =new  Database(':memory:');//sqlite
 
 const  d_DB  = drizzle(client);
 
 console.log('db___', d_DB,'cl____', client)
-d_DB.exec('SELECT *');
 
 //libSQL //db.exec("CREATE TABLE users (@userT)");
-//libSQL //db.exec("INSERT INTO userT (id, name, email) VALUES (1, 'Alice', 'alice@example.org')");
-//const row = db.prepare("SELECT * FROM @userT WHERE id = ?").get(1);
+//libSQL //db.exec("INSERT INTO userT (id, name, email) VALUES (1, 'ABC', 'ABC@example.org')");
+const row = db.prepare("SELECT * FROM @userT WHERE id = ?").get(1);
 /*
 //BSQL3// const  insert  =db.prepare('INSERT INTO userT (id, name, email) VALUES (@id, @name, @email)');
                //db.insert(users).values(user).run();
@@ -42,7 +43,7 @@ insertMany( [{id: 1, name: 'Arma'},
              {id: 3, name: 'Cita'}] );
 output()
 //BSQL3// setTimeout(()=>{console.log(getAll)}, 3000);
-
+*/
 let qN= 1;  // que number
 
 const getTime = (t = new Date().toISOString())=> 
@@ -96,7 +97,7 @@ function  make_Store()
     }  
     //_________initializing Data______________
     function  init (todos=false,  dones=false){
-        
+
        // if(D.o.length<1 || D.one.length<1){ // "error: if initialized already";
         //assign todos/dones params if it exist && valid else default values  
             D.o   =Array.from( (Array.isArray(todos) && todos.length>0)

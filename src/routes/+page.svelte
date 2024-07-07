@@ -5,11 +5,11 @@ import    {To, From} from    './animate.js'
 import    { flip }        from    'svelte/animate';
 import    Input           from    './Input.svelte';
 import    Menu            from    './Menu.svelte' ;	
-//import    {make_Store}    from    '$lib/store.svelte.js';
+import    {make_Store}    from    '$lib/store.svelte.js';
 //import    {Map}           from    'svelte/reactivity';
 
   //let Data = $state(new Map());
-  //let Store  = $state( make_Store());
+  let Store  = make_Store();
   // Input props
   let   menu=false,  info=false, L = true,
         zoom=false, view=false; 
