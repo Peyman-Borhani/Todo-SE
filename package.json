@@ -7,7 +7,7 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"env": "dotenvx run -- vite dev",
+		"envx": "dotenvx run -- vite dev",
 		"lint": "eslint .",
 		"db:gen": "drizzle-kit generate",
 		"db:push": "drizzle-kit push",
@@ -26,19 +26,19 @@
 		"eslint-plugin-svelte": "^2.41.0",
 		"lucia": "^3.2.0",
 		"rxdb": "15.24.0",
-		"svelte": "5.0.0-next.175",
+		"svelte": "5.0.0-next.181",
 		"vite": "^5.3.3"
 	},
 	"type": "module",
 	"dependencies": {
-		"@dotenvx/dotenvx": "1.1.0",
+		"@dotenvx/dotenvx": "^1.5.0",
 		"@libsql/client": "^0.7.0",
 		"@lucia-auth/adapter-drizzle": "^1.0.7",
 		"@lucia-auth/adapter-sqlite": "^3.0.2",
 		"better-sqlite3": "^11.1.2",
-		"drizzle-orm": "^0.31.2",
+		"drizzle-orm": "^0.31.4",
 		"libsql": "^0.3.19",
 		"oslo": "^1.2.1"
 	},
-	"packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a"
+	"packageManager": "pnpm@9.5.0+sha512.140036830124618d624a2187b50d04289d5a087f326c9edfc0ccd733d76c4f52c3a313d4fc148794a2a9d81553016004e6742e8cf850670268a7387fc220c903"
 }
