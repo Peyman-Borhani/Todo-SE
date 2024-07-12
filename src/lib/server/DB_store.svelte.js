@@ -1,11 +1,63 @@
 export  {make_Store}        //, output}
 //import  {Map}  from  'svelte/reactivity';
 
+// non auth Database
+//import  {sql}       from    'drizzle-orm';
+import  {userInserType, usersT, sessionT,
+         userSelecType} from './server/db/schema_DB.ts';
+import  {drizzle}       from 'drizzle-orm/libsql'; //BSQL3// 'drizzle-orm/better-sqlite3';
+import  {migrate}       from 'drizzle-orm/libsql/migrator'; //BSQL3// 'drizzle-orm/better-sqlite3/migrator';
+import  Database        from 'libsql'; //BSQL3// 'better-sqlite3';
+import  {createClient}  from "@libsql/client";
+//import  {DB_URL, DB_TOKEN}  from  '$env/static/public'
+        //  ^^^ change it to private ^^^
+
 const url  =process.env.DB_URL,
       token=process.env.DB_Token;   //'http://127.0.0.1:8080'; //'http://0.0.0.0:8080'
 
 console.log(url, token); //'a_B-c_D'
 
+const opts ={syncUrl: url, AuthToken: token}
+
+const  DB_path  ='./src/lib/server/db/todo.db'; //':memory:'
+//const  client   =createClient({url: url});
+const  db  =new  Database(DB_path,  opts);//':memory:'
+
+const  d_DB  = drizzle(db);
+//console.log('db___', d_DB,'cl____')//, client)
+
+const result = (tbl)=> d_DB.select().from(tbl).all();
+
+const insertUser = (usr)=> {
+  return d_DB.insert(userT).values(usr).run()
+}
+
+//libSQL //db.exec("CREATE TABLE users (@userT)");
+//libSQL //db.exec("INSERT INTO userT (id, name, email) VALUES (1, 'ABC', 'ABC@example.org')");
+//const row = d_DB.prepare("SELECT * FROM @userT WHERE id = ?").get(1);
+//libSQL
+//db.exec("CREATE TABLE users (@userT)");
+//libSQL
+//db.exec("INSERT INTO userT (id, name, email) VALUES (1, 'ABC', 'ABC@example.org')");
+//const row = d_DB.prepare("SELECT * FROM @userT WHERE id = ?").get(1);
+/*
+//BSQL3// const  insert  =db.prepare('INSERT INTO userT (id, name, email) VALUES (@id, @name, @email)');
+               //db.insert(users).values(user).run();
+//console.log(`Name: ${row.name}, email: ${row.email}`);
+
+//BSQL3// const  getAll  =db.select().from(user).all().get().values().run();
+
+const  output = ()=> {migrate(db, {migrationsFolder: './src/lib/srv/db/out'});  sqlite.close() }
+
+const   insertMany  =db.transaction( (users)=> {
+                    for (const usr of users)  db.insert.run(usr) });
+
+insertMany( [{id: 1, name: 'Arma'}, 
+             {id: 2, name: 'Ben'},
+             {id: 3, name: 'Cita'}] );
+output()
+//BSQL3// setTimeout(()=>{console.log(getAll)}, 3000);
+*/
 let qN= 1;  // que number
 
 const getTime = (t = new Date().toISOString())=> 
