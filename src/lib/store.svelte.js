@@ -3,32 +3,46 @@ export  {make_Store}        //, output}
 
 // non auth Database
 //import  {sql}       from    'drizzle-orm';
-import  {userT, sessionT}     from './server/db/schema_DB.ts';
-import  {drizzle}   from 'drizzle-orm/libsql'; //BSQL3// 'drizzle-orm/better-sqlite3';
-import  {migrate}   from 'drizzle-orm/libsql/migrator'; //BSQL3// 'drizzle-orm/better-sqlite3/migrator';
-import  Database    from 'libsql'; //BSQL3// 'better-sqlite3';
-import  {createClient} from "@libsql/client";
-//import  {env}       from  '$env/static/private'
+import  {userInserType, usersT, sessionT,
+         userSelecType} from './server/db/schema_DB.ts';
+import  {drizzle}       from 'drizzle-orm/libsql'; //BSQL3// 'drizzle-orm/better-sqlite3';
+import  {migrate}       from 'drizzle-orm/libsql/migrator'; //BSQL3// 'drizzle-orm/better-sqlite3/migrator';
+import  Database        from 'libsql'; //BSQL3// 'better-sqlite3';
+import  {createClient}  from "@libsql/client";
+//import  {DB_URL, DB_TOKEN}  from  '$env/static/public'
+        //  ^^^ change it to private ^^^
 
-const url  ='http://127.0.0.1:8080'; //'http://0.0.0.0:8080'
-const opts ={syncUrl: url, AuthToken: 'a_B-c_D'}
+const url  =process.env.DB_URL,
+      token=process.env.DB_Token;   //'http://127.0.0.1:8080'; //'http://0.0.0.0:8080'
 
-const  DB_path  ='./src/lib/server/db/todo.db' //':memory:'
-const  client   =createClient({url: url});
-//const  db       =new  Database(DB_path,  opts);//sqlite
-const  db       =new  Database(':memory:');//sqlite
+console.log(url, token); //'a_B-c_D'
 
-const  d_DB  = drizzle(client);
+const opts ={syncUrl: url, AuthToken: token}
 
-console.log('db___', d_DB,'cl____', client)
+const  DB_path  ='./src/lib/server/db/todo.db'; //':memory:'
+//const  client   =createClient({url: url});
+const  db  =new  Database(DB_path,  opts);//':memory:'
+
+const  d_DB  = drizzle(db);
+//console.log('db___', d_DB,'cl____')//, client)
+
+const result = (tbl)=> d_DB.select().from(tbl).all();
+
+const insertUser = (usr)=> {
+  return d_DB.insert(userT).values(usr).run()
+}
 
 //libSQL //db.exec("CREATE TABLE users (@userT)");
 //libSQL //db.exec("INSERT INTO userT (id, name, email) VALUES (1, 'ABC', 'ABC@example.org')");
-const row = db.prepare("SELECT * FROM @userT WHERE id = ?").get(1);
+//const row = d_DB.prepare("SELECT * FROM @userT WHERE id = ?").get(1);
+//libSQL
+//db.exec("CREATE TABLE users (@userT)");
+//libSQL
+//db.exec("INSERT INTO userT (id, name, email) VALUES (1, 'ABC', 'ABC@example.org')");
+//const row = d_DB.prepare("SELECT * FROM @userT WHERE id = ?").get(1);
 /*
 //BSQL3// const  insert  =db.prepare('INSERT INTO userT (id, name, email) VALUES (@id, @name, @email)');
                //db.insert(users).values(user).run();
-
 //console.log(`Name: ${row.name}, email: ${row.email}`);
 
 //BSQL3// const  getAll  =db.select().from(user).all().get().values().run();
