@@ -1,5 +1,5 @@
 export  {make_Store}        //, output}
-//import  {Map}  from  'svelte/reactivity';
+import  {SvelteMap as sMap}  from  'svelte/reactivity';
 
 //const url  =process.env.DB_URL,
 //      token=process.env.DB_Token;   //'http://127.0.0.1:8080'; //'http://0.0.0.0:8080'
@@ -27,12 +27,12 @@ const
 
 function  make_Store()
 {
-    let   Data = $state(new Map());
+    let   Data = $state(new sMap());
   
     //let complete = false;
   //____________________Add new item__________________
-    function insert (inp='', typ='todo', timer='_', now=time_Date(), check=true, tasks='_'){
-        //__Check/set the type of input
+    function insert (inp='', typ='todo', timer='_', now=time_Date(), check=true, tasks='_')
+    { //__Check/set the type of input
       if (check)
       {  
         if (typ!=='todo'  &&  typ!=='done')  typ=false;
@@ -65,34 +65,41 @@ function  make_Store()
     //_________initializing Data______________
     function  init (todos=false,  dones=false){
 
-       // if(D.o.length<1 || D.one.length<1){ // "error: if initialized already";
-        //assign todos/dones params if it exist && valid else default values  
-            D.o   =Array.from( (Array.isArray(todos) && todos.length>0)
-                                ? todos :def_todos);
-            D.one =Array.from( (Array.isArray(dones) && dones.length>0)
-                                ? dones :def_dones );
+        //if(D.o.length<1 || D.one.length<1){ // "error: list initialized already";
+        //assign todos/dones params if valid, else fill with default values  
+        D.o   =Array.from( (Array.isArray(todos) && todos.length>0)
+                            ? todos  :def_todos);
+        D.one =Array.from( (Array.isArray(dones) && dones.length>0)
+                            ? dones  :def_dones);
         //} //qN = 1;
         D.one.forEach( dn=> insert(dn, 'done') );
         D.o.forEach(  td=> insert(td, 'todo') );
-        //console.log('Daaaaaaaataaaa: ',Data.size);
+        //for test: //Data.get(id).set('item', 'abcd')
+        //console.log('item: ', Data.get(id).get('item'));
     }
     //___________________Data Tools_________________________
     const  
-        remove  = id=> Data.delete(id),
-        mark    = id=> Data[id].done.set(!Data[id].done),
+        remove =id=> Data.delete(id),
+        mark   =id=> Data.get(id).set('done', !Data.get(id).get('done'))
+        ,
         sort    = x=>  new Map([...x].sort()),
         rev     = x=>  new Map([...x].reverse()),
-        // Using Map.groupBy to categorize items based on quantity
+        // Using Map.groupBy to sort items based on specified category
         sortBy  = (id, x)=> Map.groupBy(Data=> Data.get(id).get(x)),
         log     = ()=> {for(let d of Data.keys()) console.log(Data.get(d))};
-        
-    return { 
-            get Data() {return Data},   
-            init,   insert,  remove,  mark,
-            sort,   rev,     sortBy,  log
+
+    return {  get Data()  {return  Data},
+              init,  insert,  log,  sort,
+              mark,  remove,  rev,  sortBy
     }
 }//___________________________________________________
+
 /* 
+        set Data(id) {
+          return {remove: id=> Data.delete(id),   
+                  mark  : id=> Data.get(id).set('done', 
+                              !Data.get(id).get('done')) }
+        }
 // after any changes, this must update qID's to be in order
 function  updateID (qID=1) 	{
         D.o.forEach(t=> (!t.done)? t.qID = qID++ : {})
