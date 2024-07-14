@@ -1,14 +1,13 @@
 export  {make_Store}        //, output}
 //import  {Map}  from  'svelte/reactivity';
 
-const url  =process.env.DB_URL,
-      token=process.env.DB_Token;   //'http://127.0.0.1:8080'; //'http://0.0.0.0:8080'
-
-console.log(url, token); //'a_B-c_D'
-
+//const url  =process.env.DB_URL,
+//      token=process.env.DB_Token;   //'http://127.0.0.1:8080'; //'http://0.0.0.0:8080'
+//console.log(url, token);
+//export const load = async()=> make_Store();
 let qN= 1;  // que number
 
-const getTime = (t = new Date().toISOString())=> 
+const time_Date = (t = new Date().toISOString())=> 
     ( { id: (t.slice(0,10)+' '+ t.slice(11, 23) ),
         date: t.slice(0,10),
         time: t.slice(11, 24)
@@ -32,21 +31,27 @@ function  make_Store()
   
     //let complete = false;
   //____________________Add new item__________________
-     function insert (inp='', typ='todo', timer='_', now = getTime().toString()){
+    function insert (inp='', typ='todo', timer='_', now=time_Date(), check=true, tasks='_'){
         //__Check/set the type of input
-        if(typ!=='todo' && typ!=='done') typ=false;
+      if (check)
+      {  
+        if (typ!=='todo'  &&  typ!=='done')  typ=false;
         // * TODO: check if date/time input is valid [min, hr, day, month, year]
         //  format the timer ************************************
-        if (timer!=='_' && timer.length<5)  timer= false; 
+        // todo: precise the time check
+        if (now.date.length!==10 || now.time.length<5)  now=false;
+        if (timer!=='_'  &&  timer.length<5)  timer= false; 
         // * Todo: test numbers || typeof inp!=='string' now format)
-        if (!typ || !timer || inp.length<1 || inp==='' || now.length<5)
-            {console.log('bad input'); return}
+        if (!typ || !timer || !now || !tasks || inp.length<1
+                                   || inp==='' || inp===' ')
+           {console.log('bad input at:  ', inp);  return}
+      }
         // Update D.o/D.one array  //remove if not needed
         (typ==='todo')  ? D.o   =[inp, ...D.o]   
                         : D.one =[inp, ...D.one];
         // nake a unique id    // C.randomUUID();
         let id = URL.createObjectURL(new Blob([])).slice(-36); //36  
-         
+        
         // setting a new Map item
         Data.set( id, new Map([ ['done',  (typ==='done')],
                                 ['item',  inp],
@@ -79,7 +84,7 @@ function  make_Store()
         rev     = x=>  new Map([...x].reverse()),
         // Using Map.groupBy to categorize items based on quantity
         sortBy  = (id, x)=> Map.groupBy(Data=> Data.get(id).get(x)),
-        log     = ()=> {for(let d of Data.keys()) console.log(d)};
+        log     = ()=> {for(let d of Data.keys()) console.log(Data.get(d))};
         
     return { 
             get Data() {return Data},   
