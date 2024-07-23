@@ -2,8 +2,8 @@
 <script>    
     import {scale, fly, fade}   from    'svelte/transition'
 
-// App/Menu props  (i. => interactive input/settings)
-let  {i = $bindable({menu:false, info:false, L:true, zoom:false, view:false, focus:1})} = $props();
+// App/Menu props  (ui. => user interaction/input)
+let  {ui = $bindable({menu:false, info:false, L:true, zoom:false, view:false, focus:1})} = $props();
 
 //let    {menu  =$bindable(false),  info =$bindable(false),
 //        zoom  =$bindable(false),  view =$bindable(false)
@@ -20,24 +20,24 @@ let  {i = $bindable({menu:false, info:false, L:true, zoom:false, view:false, foc
     let  date = d.toLocaleDateString();
     // to disappear the info menu in 3 seconds if is on and
     // there be no interaction. (info=true means info is visible)
-function infade(t=3000) {if(i.menu)  inf = setTimeout( ()=>{i.menu=false}, t);   return clearTimeout(inf)}
+function infade(t=3000) {if(ui.menu)  inf = setTimeout( ()=>{ui.menu=false}, t);   return clearTimeout(inf)}
 
 function stay  () {  clearTimeout(inf)  }
     
-function viu ()  {  i.view = !i.view;  //if user interact romoves timeout to delay
+function viu ()  {  ui.view = !ui.view;  //if user interact romoves timeout to delay
                     stay();
                     vu = (vu==='☰') ?  '☰ ☰'  : '☰';  //document.documentElement.style.
 }
 //in case function been called by element.
-function zum ()  {i.zoom=!i.zoom;  stay()}  //zm =(zm==='╋') ? '⚊'  :'╋';  //if(i.zoom) {e.target.style.color = '#3F3'}
+function zum ()  {ui.zoom=!ui.zoom;  stay()}  //zm =(zm==='╋') ? '⚊'  :'╋';  //if(ui.zoom) {e.target.style.color = '#3F3'}
 //exit menu when info is selected.
-function infoFN () {if(i.menu)  i.menu=false;  i.info=!i.info;  wait=true}
+function infoFN () {if(ui.menu)  ui.menu=false;  ui.info=!ui.info;  wait=true}
 
 function fuut (e){   
-                if (i.menu && e.target.tagName!=='FOOTER') return; //clicking other buttons on the menu.
-                if(!wait) i.menu = !i.menu; //to prevent accidental mouseover when element in animation.
-                if (i.menu) stay();
-                if (i.info)   i.info = false;
+                if (ui.menu && e.target.tagName!=='FOOTER') return; //clicking other buttons on the menu.
+                if(!wait) ui.menu = !ui.menu; //to prevent accidental mouseover when element in animation.
+                if (ui.menu) stay();
+                if (ui.info)   ui.info = false;
     }
 
     //to modify the task name yet limit the text size and behaviour
@@ -52,7 +52,7 @@ function fuut (e){
 
 <var  id={task_name} style = 'display: none'> {task_name} </var>
 
-{#if i.info}      
+{#if ui.info}      
             <span   id = '_Help'
                     transition:fade
                     onpointerdown  = {infoFN}
@@ -66,7 +66,7 @@ function fuut (e){
             </span>
 
 
-{:else if i.menu}
+{:else if ui.menu}
         
     <date   class ='btn'   transition:fly={{ y: -40 }}>     {date}  
     </date>
@@ -78,12 +78,12 @@ function fuut (e){
              onx = {infade(7000)}
     >
             <span   id    = '#_Info'    onclick = {infoFN}
-                    class = 'btn i'     class:pressed = {i.info}        
+                    class = 'btn i'     class:pressed = {ui.info}        
             >  About 
             </span>
 
             <span   id = '_Zoom'      class = 'btn'      transition:fade
-                    class:pressed = {i.zoom}
+                    class:pressed = {ui.zoom}
                     onmousedown  = {zum}
                 > 📥
             </span>
@@ -93,7 +93,7 @@ function fuut (e){
                     type  ='text'         onkeypress = {taskName}
                                           bind:value = {task_name}
             >                                     
-            <span   id = '_View'     class = 'btn'    class:pressed = {i.view}      
+            <span   id = '_View'     class = 'btn'    class:pressed = {ui.view}      
                     onmousedown = {viu}
                     transition:scale = "{{duration: 1000,  opacity: .3, start: 0.3}}"  
                 > {vu}    

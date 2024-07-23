@@ -3,8 +3,8 @@
    import  {SvelteMap as sMap}  from  'svelte/reactivity';
   import   {fade}     from   'svelte/transition';
 
- // App/Menu kb control props  (i. => interactive input/settings)  
-   let  {i = $bindable({menu:false, info:false, L:true, zoom:false, view:false, focus:1})} = $props();
+ // App/Menu kb control props  (ui. => user input/interaction)  
+   let  {ui = $bindable({menu:false, info:false, L:true, zoom:false, view:false, focus:1})} = $props();
 //$inspect(input.menu);  // L? user focused on left side (todos)
 
   let   k = '',     // current Keyboard key press
@@ -36,54 +36,54 @@ function  kb_Control(evk) {
   switch(k) { 
     
     case 'i':
-        if(i.info && !i.menu)  i.info=false; //info off
-        else if(!i.info && i.menu) {i.menu=false;   i.info=true} //menu off - info on
-        else i.menu=true; // menu visible.    //log(menu) 
+        if(ui.info && !ui.menu)  ui.info=false; //info off
+        else if(!ui.info && ui.menu) {ui.menu=false;   ui.info=true} //menu off - info on
+        else ui.menu=true; // menu visible.    //log(menu) 
         break;
 
     case 'ArrowLeft':  
     case 'ArrowRight':	// Left or Right keys pressed
-        i.focus = 0; 	  // focus is the selected element virtual index
-        i.L = (k==='ArrowLeft') ?   true   : false;
+        ui.focus = 0; 	  // focus is the selected element virtual index
+        ui.L = (k==='ArrowLeft') ?   true   : false;
         //reaching the first todo(L) or done(R)
-        if  (i.L)  while(todos[i.focus].done)  i.focus++;
-        else     while(!todos[i.focus].done) i.focus++;
+        if  (ui.L)  while(todos[ui.focus].done)  ui.focus++;
+        else     while(!todos[ui.focus].done) ui.focus++;
         break;
 
     case 'ArrowUp':   //up
-        if(i.L) while( i.focus>0 && todos[i.focus-1].done  ) {i.focus--; c++} //todo
-        else  while( i.focus>0 && !todos[i.focus-1].done ) {i.focus--; c++} //done
+        if(ui.L) while( ui.focus>0 && todos[ui.focus-1].done  ) {ui.focus--; c++} //todo
+        else  while( ui.focus>0 && !todos[ui.focus-1].done ) {ui.focus--; c++} //done
         if(c===todos.length) break; //if all is from opposite site
-        if(i.focus>0) i.focus--; //go up -1
-        else i.focus = todos.length-1;
+        if(ui.focus>0) ui.focus--; //go up -1
+        else ui.focus = todos.length-1;
         break;
 
     case 'ArrowDown':  //down
-        if(i.focus+1===todos.length) i.focus = -1;
-        if(i.L) while(todos[i.focus+1].done)  {i.focus++; c++} //todo
-        else  while(!todos[i.focus+1].done) {i.focus++; c++} //done
-        if(c!==todos.length) i.focus++; //if all is not from opposite side
+        if(ui.focus+1===todos.length) ui.focus = -1;
+        if(ui.L) while(todos[ui.focus+1].done)  {ui.focus++; c++} //todo
+        else  while(!todos[ui.focus+1].done) {ui.focus++; c++} //done
+        if(c!==todos.length) ui.focus++; //if all is not from opposite side
         break;                                // go down +1
     
     case 'Delete':
-        remove(todos[i.focus]);
-        if (i.focus===0) {}
-        else if (i.focus > 0) i.focus--;
-        else if(i.focus+1 <= todos.length) i.focus++;
-        updateID(); i.focus = 0;
+        remove(todos[ui.focus]);
+        if (ui.focus===0) {}
+        else if (ui.focus > 0) ui.focus--;
+        else if(ui.focus+1 <= todos.length) ui.focus++;
+        updateID(); ui.focus = 0;
         break;
         
     case '+':   
-        i.zoom = !i.zoom;  
+        ui.zoom = !ui.zoom;  
         document.documentElement.style.setProperty('--size', 'calc((4vh + 4vw)/2)'); 
         save();  load();  
         break; // pressed +
         
-    case 'v':   i.view=!i.view;	 break;  //view button
+    case 'v':   ui.view=!ui.view;	 break;  //view button
 
     case 'Enter':	 //if enter key pressed and keyboard focused	
-            if(i.focus>=0) todos[i.focus].done = 
-                (todos[i.focus].done) ?  false  : true;
+            if(ui.focus>=0) todos[ui.focus].done = 
+                (todos[ui.focus].done) ?  false  : true;
             break;
     
     case 'F5':          //to save data press F5
@@ -93,7 +93,7 @@ function  kb_Control(evk) {
                 if(prvKey==='F9') load();   break;  
                 
     default:  
-            i.focus=-1;   inp_el.focus();
+            ui.focus=-1;   inp_el.focus();
             break;
   }
   prvKey = k; //saves key, to remember as last key pressed.
