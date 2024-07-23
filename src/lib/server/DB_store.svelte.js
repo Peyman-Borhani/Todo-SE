@@ -1,9 +1,10 @@
-export  {make_Store}        //, output}
-//import  {Map}  from  'svelte/reactivity';
+export  {make_Store}
 
+import  {SvelteMap as sMap}  from  'svelte/reactivity';
+//export const load = async()=>  make_Store();
 // non auth Database
 //import  {sql}       from    'drizzle-orm';
-import  {userInserType, usersT, sessionT,
+import  {userInserType, usersT, sessionT, dataT,
          userSelecType} from './server/db/schema_DB.ts';
 import  {drizzle}       from 'drizzle-orm/libsql'; //BSQL3// 'drizzle-orm/better-sqlite3';
 import  {migrate}       from 'drizzle-orm/libsql/migrator'; //BSQL3// 'drizzle-orm/better-sqlite3/migrator';
@@ -29,19 +30,19 @@ const  d_DB  = drizzle(db);
 const result = (tbl)=> d_DB.select().from(tbl).all();
 
 const insertUser = (usr)=> {
-  return d_DB.insert(userT).values(usr).run()
+  return d_DB.insert(usersT).values(usr).run()
 }
 
-//libSQL //db.exec("CREATE TABLE users (@userT)");
-//libSQL //db.exec("INSERT INTO userT (id, name, email) VALUES (1, 'ABC', 'ABC@example.org')");
-//const row = d_DB.prepare("SELECT * FROM @userT WHERE id = ?").get(1);
+//libSQL //db.exec("CREATE TABLE users (@usersT)");
+//libSQL //db.exec("INSERT INTO usersT (id, name, email) VALUES (1, 'ABC', 'ABC@example.org')");
+//const row = d_DB.prepare("SELECT * FROM @usersT WHERE id = ?").get(1);
 //libSQL
-//db.exec("CREATE TABLE users (@userT)");
+//db.exec("CREATE TABLE users (@usersT)");
 //libSQL
-//db.exec("INSERT INTO userT (id, name, email) VALUES (1, 'ABC', 'ABC@example.org')");
-//const row = d_DB.prepare("SELECT * FROM @userT WHERE id = ?").get(1);
+//db.exec("INSERT INTO usersT (id, name, email) VALUES (1, 'ABC', 'ABC@example.org')");
+//const row = d_DB.prepare("SELECT * FROM @usersT WHERE id = ?").get(1);
 /*
-//BSQL3// const  insert  =db.prepare('INSERT INTO userT (id, name, email) VALUES (@id, @name, @email)');
+//BSQL3// const  insert  =db.prepare('INSERT INTO usersT (id, name, email) VALUES (@id, @name, @email)');
                //db.insert(users).values(user).run();
 //console.log(`Name: ${row.name}, email: ${row.email}`);
 
@@ -100,13 +101,13 @@ function  make_Store()
         let id = URL.createObjectURL(new Blob([])).slice(-36); //36  
          
         // setting a new Map item
-        Data.set( id, new Map([ ['done',  (typ==='done')],
-                                ['item',  inp],
-                                ['que',   (qN++)],
-                                ['date',  now.date],
-                                ['time',  now.time],
+        Data.set(id, new sMap([ ['done' , (typ==='done')],
+                                ['title', inp],
+                                ['que'  , (qN++)],
+                                ['date' , now.date],
+                                ['time' , now.time],
                                 ['timer', timer],
-                                ['tasks', false] ])  );
+                                ['tasks', false] ]) );
         URL.revokeObjectURL(id);
     }  
     //_________initializing Data______________
@@ -126,7 +127,7 @@ function  make_Store()
     //___________________Data Tools_________________________
     const  
         remove  = id=> Data.delete(id),
-        mark    = id=> Data[id].done.set(!Data[id].done),
+        mark   =id=> Data.get(id).set('done', !(Data.get(id).get('done'))),
         sort    = x=>  new Map([...x].sort()),
         rev     = x=>  new Map([...x].reverse()),
         // Using Map.groupBy to categorize items based on quantity
@@ -134,7 +135,7 @@ function  make_Store()
         log     = ()=> {for(let d of Data.keys()) console.log(d)};
         
     return { 
-            get Data() {return Data},   
+            Data,   
             init,   insert,  remove,  mark,
             sort,   rev,     sortBy,  log
     }
