@@ -1,70 +1,71 @@
 <script>
 
-
 import    {To, From} from    './animate.js'
 import    { flip }        from    'svelte/animate';
 import    Input           from    './Input.svelte';
 import    Menu            from    './Menu.svelte' ;	
 import    {make_Store}    from    '$lib/store.svelte.js';
-//import    {Map}           from    'svelte/reactivity';
-
-  //let Data = $state(new Map());
   let Store  = make_Store();
-  // Input props
-  let   menu=false,  info=false, L = true,
-        zoom=false, view=false; 
 
-  let env = import.meta
-  console.log(env.DEV===true? '___Yesss_' :env)
+  $effect(()=> Store.init());         //setTimeout(_=> Store.log(), 2000);
+
+  // Input props
+//  let   menu=$state(false),  info=$state(false), L = $state(true),
+//        zoom=$state(false),  view=$state(false), focus=$state(0);
+
+let  ui =$state( {menu: false,  info: false, L: true,
+                  zoom: false,  view: false, focus: 0 }); 
+//$inspect(ui.menu)
+// let env = process.env; // console.log(process.env)//(env.DEV===true? '___Yesss_' :env)
 // L: left/todo //qN = 1, task_name; ⚙️ ✘
-//$effect(Store.init());
 
 </script>
-
 
 
 <main	class = 'board'	  oncontextmenu = {false}>
 
     <div    class ='todo'
-            onpointerenter = { ()=> focus = -1 }
-            onpointerleave = { ()=> focus = -1 }
+            onpointerenter = { ()=> ui.focus = -1 }
+            onpointerleave = { ()=> ui.focus = -1 }
         >  <h1>Todo</h1>  
     </div>
     <div    class ='done'
-            onpointerenter = { ()=> focus = -1 }
-            onpointerleave = { ()=> focus = -1 }
+            onpointerenter = { ()=> ui.focus = -1 }
+            onpointerleave = { ()=> ui.focus = -1 }
         >   <h1>Done</h1>
     </div>
-    <!-- class:hovr ={ !L && id===focus+1 } -->
+    <!-- class:hovr ={ !ui.L && id===ui.focus+1 } -->
 
-    {#each  Store.Data.entries() as [id, todo], i (id)}
+    {#each  Store.Data.entries() as [id, item], i (id)}
         
-      <label  class ={todo.done? 'td_itm'  :'dn_itm'}
-              in:From ={{key: id}}   out:To ={{key: id}}
-              class:hovr   ={i===focus+1}
+      <label  class ={item.get('done')? 'dn_itm'  :'td_itm'}
+              in:From ={{key: id}}   out:To ={{key: i}}
+              class:hovr   ={i===ui.focus+1}
               animate:flip ={{duration: 600}}
             oncontextmenu  ={e=>alert(e.target)}
-            onpointerenter ={e=>e.currentTarget.classList.add('hovr')}
+            onpointerenter ={e=>{e.currentTarget.classList.add('hovr')}}
             onpointerleave ={e=>e.currentTarget.classList.remove('hovr')}
         >
-        <span>  {todo.get('done')?  '🗸' : `${i}.`}   
-                {todo.get('item')} 
+        <span>  {item.get('done')?  '🗸' : `${i}.`}   
+                {item.get('title')} 
         </span>
 
-        <input  type ='checkbox'   checked={todo.done}   
+        <input  type ='checkbox'   checked={item.done}   
                 onchange = { ()=> Store.mark(id)}
         > 
         <button     class ='trash' 
                     onclick = {()=> Store.remove(id)} 
                 > remove
         </button>
-    </label>
+      </label>
     {/each}
     
-    <Input  bind:L bind:menu bind:info bind:zoom  bind:view/>
+    <!--Input  bind:L bind:menu bind:info bind:zoom  bind:view/ -->
+    <Input  bind:ui/>
 </main>
 
-<Menu  bind:menu bind:info bind:zoom  bind:view/>
+<!--Menu  bind:menu bind:info bind:zoom  bind:view/ -->
+<Menu  bind:ui/>
 
 
 <style>  
@@ -83,7 +84,7 @@ main.board
 
 
 .todo, 
-.done { display: grid; width:100%;   grid-row: 1}
+.done {display: grid;  width:100%;   grid-row: 1}
 
 
 .todo, .td_itm {grid-column: 1}        
