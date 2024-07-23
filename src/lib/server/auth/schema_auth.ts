@@ -1,12 +1,12 @@
-export  {userT,  sessionT}
-export type  UserInserType  =typeof userT.$inferInsert;
-export type  UserSelecType  =typeof userT.$inferSelect // return type when queried
+export  {usersT,  sessionT}
+export type  UserInserType  =typeof usersT.$inferInsert;
+export type  UserSelecType  =typeof usersT.$inferSelect // return type when queried
 
 import  {sql}   from 'drizzle-orm';
 import  {integer,  sqliteTable,  
          text,     uniqueIndex}  from   'drizzle-orm/sqlite-core';
 
-const  userT  =sqliteTable(  'user', 
+const  usersT  =sqliteTable(  'user', 
   {
 	id: text('id').primaryKey().notNull(),
 	name: text('name').notNull(),
@@ -21,6 +21,6 @@ const  userT  =sqliteTable(  'user',
 const  sessionT  =sqliteTable(  'session', 
   {
     id: text('id').primaryKey().notNull(),
-    userId: text('user_id').notNull().references(()=> userT.id),
+    userId: text('user_id').notNull().references(()=> usersT.id),
     expiresAt: integer('expires_at').notNull()
 });
