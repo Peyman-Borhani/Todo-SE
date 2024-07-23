@@ -1,10 +1,9 @@
-export  {make_Store}        //, output}
+export  {make_Store}
 import  {SvelteMap as sMap}  from  'svelte/reactivity';
 
 //const url  =process.env.DB_URL,
 //      token=process.env.DB_Token;   //'http://127.0.0.1:8080'; //'http://0.0.0.0:8080'
 //console.log(url, token);
-//export const load = async()=> make_Store();
 let qN= 1;  // que number
 
 const time_Date = (t = new Date().toISOString())=> 
@@ -12,9 +11,8 @@ const time_Date = (t = new Date().toISOString())=>
         date: t.slice(0,10),
         time: t.slice(11, 24)
     });
-
-const // D.o, D.one Arrays  
-    D = { o:[],   one:[] }; //writable({o:[],  one:[]}) ,
+// D.o, D.one Arrays  
+const   D = { o:[],   one:[] };
 
 const   
     def_todos =[ // default info if not initialized.
@@ -53,11 +51,11 @@ function  make_Store()
         let id = URL.createObjectURL(new Blob([])).slice(-36); //36  
         
         // setting a new Map item
-        Data.set( id, new Map([ ['done',  (typ==='done')],
-                                ['item',  inp],
-                                ['que',   (qN++)],
-                                ['date',  now.date],
-                                ['time',  now.time],
+        Data.set(id, new sMap([ ['done' , (typ==='done')],
+                                ['title', inp],
+                                ['que'  , (qN++)],
+                                ['date' , now.date],
+                                ['time' , now.time],
                                 ['timer', timer],
                                 ['tasks', false] ])  );
         URL.revokeObjectURL(id);
@@ -74,13 +72,13 @@ function  make_Store()
         //} //qN = 1;
         D.one.forEach( dn=> insert(dn, 'done') );
         D.o.forEach(  td=> insert(td, 'todo') );
-        //for test: //Data.get(id).set('item', 'abcd')
-        //console.log('item: ', Data.get(id).get('item'));
+        //for test: //Data.get(id).set('title', 'abcd')
+        //console.log('item: ', Data.get(id).get('title'));
     }
     //___________________Data Tools_________________________
     const  
         remove =id=> Data.delete(id),
-        mark   =id=> Data.get(id).set('done', !Data.get(id).get('done'))
+        mark   =id=> Data.get(id).set('done', !(Data.get(id).get('done')))
         ,
         sort    = x=>  new Map([...x].sort()),
         rev     = x=>  new Map([...x].reverse()),
@@ -88,7 +86,7 @@ function  make_Store()
         sortBy  = (id, x)=> Map.groupBy(Data=> Data.get(id).get(x)),
         log     = ()=> {for(let d of Data.keys()) console.log(Data.get(d))};
 
-    return {  get Data()  {return  Data},
+    return {  Data, //get Data()  {return  Data},
               init,  insert,  log,  sort,
               mark,  remove,  rev,  sortBy
     }
