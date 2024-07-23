@@ -1,17 +1,13 @@
 
 <script>    
     import {scale, fly, fade}   from    'svelte/transition'
-/*
-    export  let     menu = false,
-                    info   = false,
-                    zoom   = false,
-                    view   = false;
-*/
 
-// App/Menu props
-let    {menu  =$bindable(false),  info =$bindable(false),
-        zoom  =$bindable(false),  view =$bindable(false)
-    } = $props();
+// App/Menu props  (i. => interactive input/settings)
+let  {i = $bindable({menu:false, info:false, L:true, zoom:false, view:false, focus:1})} = $props();
+
+//let    {menu  =$bindable(false),  info =$bindable(false),
+//        zoom  =$bindable(false),  view =$bindable(false)
+//    } = $props();
    
     let  inf;
     let  wait = false;
@@ -24,24 +20,24 @@ let    {menu  =$bindable(false),  info =$bindable(false),
     let  date = d.toLocaleDateString();
     // to disappear the info menu in 3 seconds if is on and
     // there be no interaction. (info=true means info is visible)
-function infade(t=3000) {if(menu)  inf = setTimeout( ()=>{menu=false}, t) }
+function infade(t=3000) {if(i.menu)  inf = setTimeout( ()=>{i.menu=false}, t);   return clearTimeout(inf)}
 
 function stay  () {  clearTimeout(inf)  }
     
-function viu ()  {  view = !view;  //if user interact romoves timeout to delay
+function viu ()  {  i.view = !i.view;  //if user interact romoves timeout to delay
                     stay();
                     vu = (vu==='☰') ?  '☰ ☰'  : '☰';  //document.documentElement.style.
-    }
+}
 //in case function been called by element.
-function zum ()  {zoom=!zoom;  stay()}  //zm =(zm==='╋') ? '⚊'  :'╋';  //if(zoom) {e.target.style.color = '#3F3'}
+function zum ()  {i.zoom=!i.zoom;  stay()}  //zm =(zm==='╋') ? '⚊'  :'╋';  //if(i.zoom) {e.target.style.color = '#3F3'}
 //exit menu when info is selected.
-function infu () {if(menu)  menu=false;  info=!info;  wait=true}
+function infoFN () {if(i.menu)  i.menu=false;  i.info=!i.info;  wait=true}
 
 function fuut (e){   
-                if (menu && e.target.tagName!=='FOOTER') return; //clicking other buttons on the menu.
-                if(!wait) menu = !menu; //to prevent accidental mouseover when element in animation.
-                if (menu) stay();
-                if (info)   info = false;
+                if (i.menu && e.target.tagName!=='FOOTER') return; //clicking other buttons on the menu.
+                if(!wait) i.menu = !i.menu; //to prevent accidental mouseover when element in animation.
+                if (i.menu) stay();
+                if (i.info)   i.info = false;
     }
 
     //to modify the task name yet limit the text size and behaviour
@@ -56,10 +52,10 @@ function fuut (e){
 
 <var  id={task_name} style = 'display: none'> {task_name} </var>
 
-{#if info}      
+{#if i.info}      
             <span   id = '_Help'
                     transition:fade
-                    onpointerdown  = {infu}
+                    onpointerdown  = {infoFN}
                     onpointerleave = {infade}                            
 
                     > A Perfect Todo app !<br> <br>
@@ -70,7 +66,7 @@ function fuut (e){
             </span>
 
 
-{:else if menu}
+{:else if i.menu}
         
     <date   class ='btn'   transition:fly={{ y: -40 }}>     {date}  
     </date>
@@ -81,13 +77,13 @@ function fuut (e){
              onmouseover   = {stay}
              onx = {infade(7000)}
     >
-            <span   id    = '#_Info'    onclick = {infu}
-                    class = 'btn i'     class:pressed = {info}        
+            <span   id    = '#_Info'    onclick = {infoFN}
+                    class = 'btn i'     class:pressed = {i.info}        
             >  About 
             </span>
 
             <span   id = '_Zoom'      class = 'btn'      transition:fade
-                    class:pressed = {zoom}
+                    class:pressed = {i.zoom}
                     onmousedown  = {zum}
                 > 📥
             </span>
@@ -97,7 +93,7 @@ function fuut (e){
                     type  ='text'         onkeypress = {taskName}
                                           bind:value = {task_name}
             >                                     
-            <span   id = '_View'     class = 'btn'    class:pressed = {view}      
+            <span   id = '_View'     class = 'btn'    class:pressed = {i.view}      
                     onmousedown = {viu}
                     transition:scale = "{{duration: 1000,  opacity: .3, start: 0.3}}"  
                 > {vu}    
